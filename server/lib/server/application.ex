@@ -12,6 +12,7 @@ defmodule Server.Application do
       Server.Repo,
       {DNSCluster, query: Application.get_env(:server, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Server.PubSub},
+      {Server.Room.RoomDatabase, name: Server.Room.RoomDatabase},
       # Start the Finch HTTP client for sending emails
       {Finch, name: Server.Finch},
       # Start a worker by calling: Server.Worker.start_link(arg)

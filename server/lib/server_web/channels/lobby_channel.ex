@@ -1,8 +1,8 @@
-defmodule ServerWeb.RoomChannel do
+defmodule ServerWeb.LobbyChannel do
   use ServerWeb, :channel
 
   @impl true
-  def join("room:lobby", payload, socket) do
+  def join("lobby", payload, socket) do
     if authorized?(payload) do
       {:ok, socket}
     else
@@ -23,6 +23,13 @@ defmodule ServerWeb.RoomChannel do
   def handle_in("shout", payload, socket) do
     broadcast(socket, "shout", payload)
     {:noreply, socket}
+  end
+
+  @impl true
+  def handle_in("create", %{"name" => name}, socket) do
+    # Faire des
+    uuid = Server.Room.create(name)
+    {:reply, {:ok, uuid}, socket}
   end
 
   # Add authorization logic here as required.
