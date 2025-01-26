@@ -1,0 +1,128 @@
+<div class="flex-1 flex flex-row gap-8 p-8 font-mono">
+  <div class="flex-1 flex flex-col gap-8">
+    <.form for={@join_form} phx-submit="join" class="flex flex-row gap-4">
+      <.input
+        type="text"
+        id="join_topic"
+        field={@join_form[:topic]}
+        class="flex-1 bg-white"
+        placeholder="Topic"
+        required
+      />
+      <button
+        type="submit"
+        class="bg-zinc-700 disabled:bg-zinc-700/80 text-zinc-50 rounded px-8 py-2"
+      >
+        Join
+      </button>
+    </.form>
+    <hr />
+    <.form for={@push_form} phx-submit="push" class="flex flex-col gap-4">
+      <div class="flex flex-row gap-4">
+        <.input
+          id="push_topic"
+          type="select"
+          field={@push_form[:topic]}
+          options={@topics}
+          class="flex-1"
+          prompt={if Enum.count(@topics) == 0, do: "Topic", else: nil}
+          required
+        />
+        <.input
+          type="text"
+          field={@push_form[:event]}
+          class="flex-1"
+          placeholder="Event"
+          required
+        />
+      </div>
+      <.input
+        type="textarea"
+        rows={16}
+        field={@push_form[:payload]}
+        class="flex-1"
+        placeholder="Payload"
+        required
+      />
+      <button
+        type="submit"
+        class="bg-zinc-700 disabled:bg-zinc-700/80 text-zinc-50 rounded px-8 py-2"
+        disabled={Enum.count(@topics) == 0}
+      >
+        Push
+      </button>
+    </.form>
+    <hr />
+    <pre class="flex-1 flex">
+      <code
+        id="focused"
+        phx-update="ignore"
+        class="language-json flex-1 rounded min-h-8"
+        phx-hook="JSONPrettyPrint"
+      >
+      </code>
+    </pre>
+  </div>
+  <div class="flex-[2]">
+    <table class="table-auto w-full rounded border border-zinc-200">
+      <thead class="font-bold bg-zinc-50 border-b border-zinc-200">
+        <tr>
+          <td class="py-2 px-4"></td>
+          <td class="py-2 px-4">Ref</td>
+          <td class="py-2 px-4">Time</td>
+          <td class="py-2 px-4">Direction</td>
+          <td class="py-2 px-4">Topic</td>
+          <td class="py-2 px-4">Event</td>
+          <td class="py-2 px-4">Payload</td>
+        </tr>
+      </thead>
+      <tbody id="channel-events" phx-update="stream">
+        <tr
+          :for={
+            {id,
+             %{
+               ref: ref,
+               datetime: datetime,
+               direction: direction,
+               topic: topic,
+               event: event,
+               payload: payload
+             }} <-
+              @streams.channel_events
+          }
+          class="cursor-pointer hover:bg-zinc-50"
+          id={id}
+          phx-click={JS.set_attribute({"data-json", JSON.encode!(payload)}, to: "#focused")}
+        >
+          <td class={[
+            "py-2 px-4",
+            if(direction == :incoming, do: "text-indigo-700", else: "text-rose-700")
+          ]}>
+            ◉
+          </td>
+          <td class="py-2 px-4">
+            <span :if={direction == :incoming and ref}>⤷</span>
+            <span>{ref}</span>
+          </td>
+          <td class="py-2 px-4">{DateTime.to_time(datetime)}</td>
+          <td class="py-2 px-4">
+            <%= if direction == :incoming do %>
+              <span class="text-2xl leading-6 text-indigo-700 font-bold">
+                &dArr;
+              </span>
+            <% else %>
+              <span class="text-2xl leading-6 text-rose-700 font-bold">
+                &uArr;
+              </span>
+            <% end %>
+            {direction}
+          </td>
+
+          <td class="py-2 px-4">{topic}</td>
+          <td class="py-2 px-4">{event}</td>
+          <td class="py-2 px-4"><pre>{JSON.encode!(payload)}</pre></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

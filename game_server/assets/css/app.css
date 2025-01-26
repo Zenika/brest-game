@@ -2,4 +2,22 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+@import "../node_modules/highlight.js/styles/base16/gruvbox-dark-pale.css";
+
 /* This file is for your main application CSS */
+@layer base {
+
+    html,
+    body,
+    div[data-phx-main] {
+        @apply h-screen m-0 p-0 flex flex-col bg-white;
+    }
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+        /* Trick to disable webkit autofill blue background */
+        transition: background-color 5000000s ease-in-out 0s;
+    }
+}
