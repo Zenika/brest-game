@@ -286,6 +286,7 @@ defmodule GameServerWeb.CoreComponents do
   attr :prompt, :string, default: nil, doc: "the prompt for select inputs"
   attr :options, :list, doc: "the options to pass to Phoenix.HTML.Form.options_for_select/2"
   attr :multiple, :boolean, default: false, doc: "the multiple flag for select inputs"
+  attr :class, :string, default: ""
 
   attr :rest, :global,
     include: ~w(accept autocomplete capture cols disabled form list max maxlength min minlength
@@ -309,7 +310,7 @@ defmodule GameServerWeb.CoreComponents do
       end)
 
     ~H"""
-    <div>
+    <div class={@class}>
       <label class="flex items-center gap-4 text-sm leading-6 text-zinc-600">
         <input type="hidden" name={@name} value="false" disabled={@rest[:disabled]} />
         <input
@@ -330,16 +331,16 @@ defmodule GameServerWeb.CoreComponents do
 
   def input(%{type: "select"} = assigns) do
     ~H"""
-    <div>
+    <div class={@class}>
       <.label for={@id}>{@label}</.label>
       <select
         id={@id}
         name={@name}
-        class="mt-2 block w-full rounded-md border border-gray-300 bg-white shadow-sm focus:border-zinc-400 focus:ring-0 sm:text-sm"
+        class="block w-full rounded border border-gray-300 bg-white shadow-sm focus:border-zinc-400 focus:ring-0"
         multiple={@multiple}
         {@rest}
       >
-        <option :if={@prompt} value="">{@prompt}</option>
+        <option :if={@prompt} value="" disabled selected>{@prompt}</option>
         {Phoenix.HTML.Form.options_for_select(@options, @value)}
       </select>
       <.error :for={msg <- @errors}>{msg}</.error>
@@ -349,13 +350,13 @@ defmodule GameServerWeb.CoreComponents do
 
   def input(%{type: "textarea"} = assigns) do
     ~H"""
-    <div>
+    <div class={@class}>
       <.label for={@id}>{@label}</.label>
       <textarea
         id={@id}
         name={@name}
         class={[
-          "mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6 min-h-[6rem]",
+          "block w-full rounded text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6 min-h-[6rem]",
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"
         ]}
@@ -369,7 +370,7 @@ defmodule GameServerWeb.CoreComponents do
   # All other inputs text, datetime-local, url, password, etc. are handled here...
   def input(assigns) do
     ~H"""
-    <div>
+    <div class={@class}>
       <.label for={@id}>{@label}</.label>
       <input
         type={@type}
@@ -377,7 +378,7 @@ defmodule GameServerWeb.CoreComponents do
         id={@id}
         value={Phoenix.HTML.Form.normalize_value(@type, @value)}
         class={[
-          "mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6",
+          "block w-full rounded text-zinc-900 focus:ring-0 sm:leading-6",
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"
         ]}
