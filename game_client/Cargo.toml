@@ -8,6 +8,7 @@ resolver = "2"
 
 [dependencies]
 bevy = { version = "0.15.3", features = ["dynamic_linking"] }
+bevy-inspector-egui = "0.29.1"
 log = { version = "*", features = [
     "max_level_debug",
     "release_max_level_warn",
