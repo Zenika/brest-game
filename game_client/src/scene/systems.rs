@@ -1,17 +1,11 @@
-use bevy::{
-    asset::Assets,
-    color::Color,
-    core::Name,
-    core_pipeline::core_3d::Camera3d,
-    ecs::system::{Commands, ResMut},
-    math::primitives::Rectangle,
-    pbr::{DirectionalLight, MeshMaterial3d, StandardMaterial},
-    render::mesh::{Mesh, Mesh3d},
-    transform::components::Transform,
-    utils::default,
-};
+use std::ops::Deref;
 
-use super::constants::{BOARD_SIDE_LENGTH, CAMERA_POSITION, CAMERA_TARGET, CAMERA_UP};
+use bevy::{ecs::system::SystemParam, prelude::*};
+
+use super::{
+    constants::{BOARD_SIDE_LENGTH, CAMERA_POSITION, CAMERA_TARGET, CAMERA_UP},
+    resources::BoardColor,
+};
 
 pub fn setup_camera(mut commands: Commands) {
     commands.spawn((
@@ -21,6 +15,7 @@ pub fn setup_camera(mut commands: Commands) {
     ));
 }
 
+// Parameterized system without SystemParam, RETURNS the desired system
 pub fn setup_key_light(illuminance: f32, shadows_enabled: bool) -> impl Fn(Commands<'_, '_>) {
     move |mut commands: Commands| {
         commands.spawn((
@@ -34,19 +29,31 @@ pub fn setup_key_light(illuminance: f32, shadows_enabled: bool) -> impl Fn(Comma
     }
 }
 
-pub fn setup_board(
-    material_color: Color,
-) -> impl Fn(Commands<'_, '_>, ResMut<'_, Assets<Mesh>>, ResMut<'_, Assets<StandardMaterial>>) {
-    move |mut commands: Commands,
-          mut meshes: ResMut<Assets<Mesh>>,
-          mut materials: ResMut<Assets<StandardMaterial>>| {
-        commands.spawn((
-            Name::new("Board"),
-            Mesh3d(meshes.add(Rectangle::from_length(BOARD_SIDE_LENGTH))),
-            MeshMaterial3d(materials.add(StandardMaterial {
-                base_color: material_color,
-                ..default()
-            })),
-        ));
+#[derive(SystemParam)]
+pub struct BoardColorParam<'w>(pub Res<'w, BoardColor>);
+
+// Optional, but prevents the need of triple dereferencing, e.g. `***board_color_param`
+impl Deref for BoardColorParam<'_> {
+    type Target = Color;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0.0
     }
+}
+
+// Parameterized system with SystemParam, IS the desired system, the parameter is "injected" by Bevy
+pub fn setup_board(
+    mut commands: Commands,
+    mut meshes: ResMut<Assets<Mesh>>,
+    mut materials: ResMut<Assets<StandardMaterial>>,
+    board_color_param: BoardColorParam,
+) {
+    commands.spawn((
+        Name::new("Board"),
+        Mesh3d(meshes.add(Rectangle::from_length(BOARD_SIDE_LENGTH))),
+        MeshMaterial3d(materials.add(StandardMaterial {
+            base_color: *board_color_param,
+            ..default()
+        })),
+    ));
 }
