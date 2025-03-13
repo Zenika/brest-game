@@ -1,4 +1,5 @@
 mod bundles;
+mod commands;
 mod components;
 mod constants;
 mod fixtures;

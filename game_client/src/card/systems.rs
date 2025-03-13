@@ -1,43 +1,23 @@
 use bevy::prelude::*;
 
 use super::{
-    bundles::CardBundle,
-    components::CardLocation,
-    fixtures::CARDS,
-    resources::{CardMaterials, CardMesh},
+    commands::SpawnCardExt, components::CardLocation, fixtures::CARDS, resources::CardMaterials,
 };
 
 type Click = Pointer<Up>;
 
-pub fn setup_cards(
-    mut commands: Commands,
-    card_materials: Res<CardMaterials>,
-    card_mesh: Res<CardMesh>,
-) {
+pub fn setup_cards(mut commands: Commands) {
     for (index, (card_type, x)) in CARDS.into_iter().enumerate() {
-        spawn_card_bundle(
-            &mut commands,
-            CardBundle {
-                name: Name::new(format!("Card {}", index)),
-                card_type,
-                card_location: CardLocation::HAND,
-                mesh: Mesh3d(card_mesh.clone()),
-                mesh_material: MeshMaterial3d(card_materials.base.clone()),
-                transform: Transform::from_xyz(x, 0., 0.),
-            },
-        );
+        commands.spawn_card(index, card_type, x);
+        // commands.queue(SpawnCard {
+        //     index,
+        //     card_type,
+        //     x,
+        // });
     }
 }
 
-fn spawn_card_bundle(commands: &mut Commands, bundle: CardBundle) {
-    commands
-        .spawn(bundle)
-        .observe(update_material_on_pointer_over)
-        .observe(update_material_on_pointer_out)
-        .observe(play_on_click);
-}
-
-fn update_material_on_pointer_over(
+pub fn update_material_on_pointer_over(
     trigger: Trigger<Pointer<Over>>,
     card_materials: Res<CardMaterials>,
     mut query: Query<&mut MeshMaterial3d<StandardMaterial>>,
@@ -47,7 +27,7 @@ fn update_material_on_pointer_over(
     }
 }
 
-fn update_material_on_pointer_out(
+pub fn update_material_on_pointer_out(
     trigger: Trigger<Pointer<Out>>,
     card_materials: Res<CardMaterials>,
     mut query: Query<&mut MeshMaterial3d<StandardMaterial>>,
@@ -57,7 +37,7 @@ fn update_material_on_pointer_out(
     }
 }
 
-fn play_on_click(trigger: Trigger<Click>, mut query: Query<&mut CardLocation>) {
+pub fn play_on_click(trigger: Trigger<Click>, mut query: Query<&mut CardLocation>) {
     if let Ok(mut location) = query.get_mut(trigger.entity()) {
         *location = CardLocation::BOARD;
     }
