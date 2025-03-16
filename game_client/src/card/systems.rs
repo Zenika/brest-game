@@ -1,3 +1,4 @@
+use anima::{Anima, SetTED, WithTED};
 use bevy::prelude::*;
 
 use super::{
@@ -9,11 +10,6 @@ type Click = Pointer<Up>;
 pub fn setup_cards(mut commands: Commands) {
     for (index, (card_type, x)) in CARDS.into_iter().enumerate() {
         commands.spawn_card(index, card_type, x);
-        // commands.queue(SpawnCard {
-        //     index,
-        //     card_type,
-        //     x,
-        // });
     }
 }
 
@@ -39,23 +35,43 @@ pub fn update_material_on_pointer_out(
 
 pub fn play_on_click(trigger: Trigger<Click>, mut query: Query<&mut CardLocation>) {
     if let Ok(mut location) = query.get_mut(trigger.entity()) {
-        *location = CardLocation::BOARD;
+        *location = CardLocation::Board;
     }
 }
 
-pub fn update_position(mut query: Query<(&CardLocation, &mut Transform), Changed<CardLocation>>) {
-    for (card_location, mut transform) in &mut query {
+pub fn update_position(
+    mut query: Query<(&CardLocation, &Transform, &mut Anima), Changed<CardLocation>>,
+) {
+    for (card_location, transform, mut anima) in &mut query {
         match card_location {
-            CardLocation::HAND => {
-                transform.translation.z = 0.5;
-                transform.translation.y = -4.;
+            CardLocation::Hand => {
+                // Anima Immunable (With) TRS API, replacing the whole Anima with a new modified one (TRS = Translation / Rotation / Scale)
+                // *anima = anima
+                //     .with_translation((Vec3::new(transform.translation.x, -4., 2.), None, None))
+                //     .with_rotation((Quat::from_rotation_x(0.5), None, None));
+
+                // Anima Immunable (With) TED API, replacing the whole Anima with a new modified one (TED = Transform / Easings / Durations)
+                *anima = anima.with_transform((
+                    Vec3::new(transform.translation.x, -4., 2.),
+                    Quat::from_rotation_x(0.5),
+                    None,
+                ));
             }
-            CardLocation::BOARD => {
-                transform.translation.z = 0.01;
-                transform.translation.y = 0.;
+            CardLocation::Board => {
+                // Anima Mutable (Set) TRS API, modifying the anima inplace (TRS = Translation / Rotation / Scale)
+                // anima
+                //     .set_translation((Vec3::new(transform.translation.x, 0., 0.01), None, None))
+                //     .set_rotation((Quat::from_rotation_x(0.), None, None));
+
+                // Anima Mutable (Set) TED API, modifying the anima inplace (TED = Transform / Easings / Durations)
+                anima.set_transform((
+                    Vec3::new(transform.translation.x, 0., 0.01),
+                    Quat::from_rotation_x(0.),
+                    None,
+                ));
             }
-            CardLocation::GRAVEYARD => {}
-            CardLocation::DECK => {}
+            CardLocation::Graveyard => {}
+            CardLocation::Deck => {}
         }
     }
 }

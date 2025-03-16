@@ -3,16 +3,16 @@ use bevy::prelude::*;
 #[derive(Component, Reflect)]
 #[reflect(Component)]
 pub enum CardType {
-    ATTACK,
-    DEFENSE,
-    SPELL,
+    Attack,
+    Defense,
+    Spell,
 }
 
 #[derive(Component, Reflect)]
 #[reflect(Component)]
 pub enum CardLocation {
-    HAND,
-    BOARD,
-    GRAVEYARD,
-    DECK,
+    Hand,
+    Board,
+    Graveyard,
+    Deck,
 }

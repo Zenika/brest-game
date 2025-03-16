@@ -1,7 +1,6 @@
 use bevy::prelude::*;
 
 use super::{
-    bundles::CardBundle,
     components::{CardLocation, CardType},
     resources::{CardMaterials, CardMesh},
     systems::{play_on_click, update_material_on_pointer_out, update_material_on_pointer_over},
@@ -18,18 +17,23 @@ impl Command for SpawnCard {
         let card_mesh = world.resource::<CardMesh>();
         let card_materials = world.resource::<CardMaterials>();
 
-        let bundle = CardBundle {
-            name: Name::new(format!("Card {}", self.index)),
-            card_type: self.card_type,
-            card_location: CardLocation::HAND,
-            mesh: Mesh3d((*card_mesh).clone()),
-            mesh_material: MeshMaterial3d(card_materials.base.clone()),
-            transform: Transform::from_xyz(self.x, 0., 0.),
-        };
+        let base_bundle = (
+            Name::new(format!("Card {}", self.index)),
+            self.card_type,
+            CardLocation::Hand,
+        );
 
-        world
-            .commands()
-            .spawn(bundle)
+        let rendering_bundle = (
+            Transform::from_xyz(self.x, 0., 0.),
+            Mesh3d((*card_mesh).clone()),
+            MeshMaterial3d(card_materials.base.clone()),
+        );
+
+        let mut commands = world.commands();
+
+        commands
+            .spawn(base_bundle)
+            .insert(rendering_bundle)
             .observe(update_material_on_pointer_over)
             .observe(update_material_on_pointer_out)
             .observe(play_on_click);
@@ -40,7 +44,7 @@ pub trait SpawnCardExt {
     fn spawn_card(&mut self, index: usize, card_type: CardType, x: f32);
 }
 
-impl<'w, 's> SpawnCardExt for Commands<'w, 's> {
+impl SpawnCardExt for Commands<'_, '_> {
     fn spawn_card(&mut self, index: usize, card_type: CardType, x: f32) {
         self.queue(SpawnCard {
             index,

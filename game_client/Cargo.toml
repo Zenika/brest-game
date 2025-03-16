@@ -1,18 +1,24 @@
+[workspace]
+resolver = "2"
+members = ["crates/*"]
+
+[workspace.dependencies]
+bevy = { version = "0.15.3", features = ["dynamic_linking"] }
+
 [package]
 name = "game_client"
 version = "0.1.0"
 edition = "2024"
 
-[workspace]
-resolver = "2"
-
 [dependencies]
-bevy = { version = "0.15.3", features = ["dynamic_linking"] }
+anima = { path = "./crates/anima" }
+bevy = { workspace = true }
 bevy-inspector-egui = "0.29.1"
 log = { version = "*", features = [
     "max_level_debug",
     "release_max_level_warn",
 ] }
+
 
 [profile.dev]
 opt-level = 1
