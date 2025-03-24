@@ -4,7 +4,7 @@ use bevy::prelude::*;
 use super::{
     components::{CardLocation, CardType},
     resources::{CardColors, CardMaterials, CardMesh},
-    systems::{setup_cards, update_position},
+    systems::{arrange_deck, arrange_graveyard, arrange_hand, place_on_board, setup_cards},
 };
 
 pub struct CardPlugin {
@@ -22,7 +22,15 @@ impl Plugin for CardPlugin {
         .init_resource::<CardMesh>()
         .add_systems(Startup, setup_cards)
         .add_systems(PostStartup, enable_anima::<With<CardType>>)
-        .add_systems(Update, update_position)
+        .add_systems(
+            Update,
+            (
+                place_on_board,
+                arrange_deck,
+                arrange_hand,
+                arrange_graveyard,
+            ),
+        )
         .register_type::<CardType>()
         .register_type::<CardLocation>()
         .register_type::<CardColors>()

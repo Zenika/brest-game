@@ -8,7 +8,7 @@ pub enum CardType {
     Spell,
 }
 
-#[derive(Component, Reflect)]
+#[derive(Component, Reflect, PartialEq)]
 #[reflect(Component)]
 pub enum CardLocation {
     Hand,

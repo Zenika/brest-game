@@ -3,13 +3,14 @@ use bevy::prelude::*;
 use super::{
     components::{CardLocation, CardType},
     resources::{CardMaterials, CardMesh},
-    systems::{play_on_click, update_material_on_pointer_out, update_material_on_pointer_over},
+    systems::{
+        cycle_location_on_click, update_material_on_pointer_out, update_material_on_pointer_over,
+    },
 };
 
 pub struct SpawnCard {
     pub index: usize,
     pub card_type: CardType,
-    pub x: f32,
 }
 
 impl Command for SpawnCard {
@@ -20,11 +21,11 @@ impl Command for SpawnCard {
         let base_bundle = (
             Name::new(format!("Card {}", self.index)),
             self.card_type,
-            CardLocation::Hand,
+            CardLocation::Deck,
         );
 
         let rendering_bundle = (
-            Transform::from_xyz(self.x, 0., 0.),
+            Transform::from_xyz(0., 0., 1.),
             Mesh3d((*card_mesh).clone()),
             MeshMaterial3d(card_materials.base.clone()),
         );
@@ -36,20 +37,16 @@ impl Command for SpawnCard {
             .insert(rendering_bundle)
             .observe(update_material_on_pointer_over)
             .observe(update_material_on_pointer_out)
-            .observe(play_on_click);
+            .observe(cycle_location_on_click);
     }
 }
 
 pub trait SpawnCardExt {
-    fn spawn_card(&mut self, index: usize, card_type: CardType, x: f32);
+    fn spawn_card(&mut self, index: usize, card_type: CardType);
 }
 
 impl SpawnCardExt for Commands<'_, '_> {
-    fn spawn_card(&mut self, index: usize, card_type: CardType, x: f32) {
-        self.queue(SpawnCard {
-            index,
-            card_type,
-            x,
-        });
+    fn spawn_card(&mut self, index: usize, card_type: CardType) {
+        self.queue(SpawnCard { index, card_type });
     }
 }
