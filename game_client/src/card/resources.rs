@@ -44,3 +44,57 @@ impl FromWorld for CardMesh {
         CardMesh(meshes.add(Cuboid::from_size(CARD_SIZE)))
     }
 }
+
+#[derive(Resource, Deref, Reflect)]
+#[reflect(Resource)]
+pub struct DeckSeq(u8);
+
+impl DeckSeq {
+    pub fn next(&mut self) -> u8 {
+        self.0 += 1;
+
+        self.0
+    }
+}
+
+impl FromWorld for DeckSeq {
+    fn from_world(_: &mut World) -> Self {
+        Self(0)
+    }
+}
+
+#[derive(Resource, Deref, Reflect)]
+#[reflect(Resource)]
+pub struct HandSeq(u8);
+
+impl HandSeq {
+    pub fn next(&mut self) -> u8 {
+        self.0 += 1;
+
+        self.0
+    }
+}
+
+impl FromWorld for HandSeq {
+    fn from_world(_: &mut World) -> Self {
+        Self(0)
+    }
+}
+
+#[derive(Resource, Deref, Reflect)]
+#[reflect(Resource)]
+pub struct GraveyardSeq(u8);
+
+impl GraveyardSeq {
+    pub fn next(&mut self) -> u8 {
+        self.0 += 1;
+
+        self.0
+    }
+}
+
+impl FromWorld for GraveyardSeq {
+    fn from_world(_: &mut World) -> Self {
+        Self(0)
+    }
+}

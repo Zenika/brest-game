@@ -4,8 +4,11 @@ use anima::{Anima, WithTED, WithTRS};
 use bevy::prelude::*;
 
 use super::{
-    commands::SpawnCardExt, components::CardLocation, constants::CARD_SIZE, fixtures::CARDS,
-    resources::CardMaterials,
+    commands::SpawnCardExt,
+    components::{CardLocation, DeckSeqStamp, GraveyardSeqStamp, HandSeqStamp},
+    constants::CARD_SIZE,
+    fixtures::CARDS,
+    resources::{CardMaterials, DeckSeq, GraveyardSeq, HandSeq},
 };
 
 type Click = Pointer<Up>;
@@ -49,6 +52,35 @@ pub fn cycle_location_on_click(trigger: Trigger<Click>, mut query: Query<&mut Ca
     }
 }
 
+pub fn update_seqs(
+    mut commands: Commands,
+    mut deck_seq: ResMut<DeckSeq>,
+    mut hand_seq: ResMut<HandSeq>,
+    mut graveyard_seq: ResMut<GraveyardSeq>,
+    query: Query<(Entity, &CardLocation), Changed<CardLocation>>,
+) {
+    for (entity, location) in &query {
+        match *location {
+            CardLocation::Hand => {
+                commands
+                    .entity(entity)
+                    .insert(HandSeqStamp(hand_seq.next()));
+            }
+            CardLocation::Board => {}
+            CardLocation::Graveyard => {
+                commands
+                    .entity(entity)
+                    .insert(GraveyardSeqStamp(graveyard_seq.next()));
+            }
+            CardLocation::Deck => {
+                commands
+                    .entity(entity)
+                    .insert(DeckSeqStamp(deck_seq.next()));
+            }
+        }
+    }
+}
+
 pub fn place_on_board(mut query: Query<(&CardLocation, &mut Anima), Changed<CardLocation>>) {
     for (card_location, mut anima) in &mut query {
         if let CardLocation::Board = card_location {
@@ -61,14 +93,21 @@ pub fn place_on_board(mut query: Query<(&CardLocation, &mut Anima), Changed<Card
     }
 }
 
-pub fn arrange_deck(mut query: Query<(&CardLocation, &mut Anima)>) {
+pub fn arrange_deck(mut query: Query<(&CardLocation, &DeckSeqStamp, &mut Anima)>) {
+    let target_location = CardLocation::Deck;
     let target_rotation = Quat::from_rotation_y(-PI);
 
-    query
+    let mut cards: Vec<_> = query
         .iter_mut()
-        .filter(|&(location, _)| location == &CardLocation::Deck)
+        .filter(|&(location, _, _)| *location == target_location)
+        .collect();
+
+    cards.sort_by(|(_, seq_stamp_a, _), (_, seq_stamp_b, _)| seq_stamp_a.cmp(seq_stamp_b));
+
+    cards
+        .into_iter()
         .enumerate()
-        .for_each(|(index, (_, mut anima))| {
+        .for_each(|(index, (_, _, mut anima))| {
             let target_translation = Vec3::new(4., -4., (index as f32 + 1.) * TRANSLATION_GAP);
 
             anima.set_if_neq(
@@ -79,21 +118,24 @@ pub fn arrange_deck(mut query: Query<(&CardLocation, &mut Anima)>) {
         });
 }
 
-pub fn arrange_hand(mut query: Query<(&CardLocation, &mut Anima)>) {
+pub fn arrange_hand(mut query: Query<(&CardLocation, &HandSeqStamp, &mut Anima)>) {
     let target_location = CardLocation::Hand;
     let target_rotation = Quat::from_rotation_x(PI / 4.);
     let x_step = CARD_SIZE.x + TRANSLATION_GAP;
 
-    let count = query
-        .iter()
-        .filter(|&(location, _)| *location == target_location)
-        .count() as f32;
-
-    query
+    let mut cards: Vec<_> = query
         .iter_mut()
-        .filter(|&(location, _)| *location == target_location)
+        .filter(|&(location, _, _)| *location == target_location)
+        .collect();
+
+    let count = cards.len() as f32;
+
+    cards.sort_by(|(_, seq_stamp_a, _), (_, seq_stamp_b, _)| seq_stamp_a.cmp(seq_stamp_b));
+
+    cards
+        .into_iter()
         .enumerate()
-        .for_each(|(index, (_, mut anima))| {
+        .for_each(|(index, (_, _, mut anima))| {
             let target_translation = Vec3::new(
                 (-x_step * (count - 1.) / 2.) + (index as f32 * x_step),
                 -5.,
@@ -108,14 +150,21 @@ pub fn arrange_hand(mut query: Query<(&CardLocation, &mut Anima)>) {
         });
 }
 
-pub fn arrange_graveyard(mut query: Query<(&CardLocation, &mut Anima)>) {
+pub fn arrange_graveyard(mut query: Query<(&CardLocation, &GraveyardSeqStamp, &mut Anima)>) {
+    let target_location = CardLocation::Graveyard;
     let target_rotation = Quat::from_rotation_y(-PI);
 
-    query
+    let mut cards: Vec<_> = query
         .iter_mut()
-        .filter(|&(location, _)| location == &CardLocation::Graveyard)
+        .filter(|&(location, _, _)| *location == target_location)
+        .collect();
+
+    cards.sort_by(|(_, seq_stamp_a, _), (_, seq_stamp_b, _)| seq_stamp_a.cmp(seq_stamp_b));
+
+    cards
+        .into_iter()
         .enumerate()
-        .for_each(|(index, (_, mut anima))| {
+        .for_each(|(index, (_, _, mut anima))| {
             let target_translation = Vec3::new(4., -2., (index as f32 + 1.) * TRANSLATION_GAP);
 
             anima.set_if_neq(

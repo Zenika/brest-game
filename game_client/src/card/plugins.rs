@@ -2,9 +2,11 @@ use anima::enable_anima;
 use bevy::prelude::*;
 
 use super::{
-    components::{CardLocation, CardType},
-    resources::{CardColors, CardMaterials, CardMesh},
-    systems::{arrange_deck, arrange_graveyard, arrange_hand, place_on_board, setup_cards},
+    components::{CardLocation, CardType, DeckSeqStamp, GraveyardSeqStamp, HandSeqStamp},
+    resources::{CardColors, CardMaterials, CardMesh, DeckSeq, GraveyardSeq, HandSeq},
+    systems::{
+        arrange_deck, arrange_graveyard, arrange_hand, place_on_board, setup_cards, update_seqs,
+    },
 };
 
 pub struct CardPlugin {
@@ -20,11 +22,15 @@ impl Plugin for CardPlugin {
         })
         .init_resource::<CardMaterials>()
         .init_resource::<CardMesh>()
+        .init_resource::<DeckSeq>()
+        .init_resource::<HandSeq>()
+        .init_resource::<GraveyardSeq>()
         .add_systems(Startup, setup_cards)
         .add_systems(PostStartup, enable_anima::<With<CardType>>)
         .add_systems(
             Update,
             (
+                update_seqs,
                 place_on_board,
                 arrange_deck,
                 arrange_hand,
@@ -35,6 +41,12 @@ impl Plugin for CardPlugin {
         .register_type::<CardLocation>()
         .register_type::<CardColors>()
         .register_type::<CardMaterials>()
-        .register_type::<CardMesh>();
+        .register_type::<CardMesh>()
+        .register_type::<DeckSeq>()
+        .register_type::<DeckSeqStamp>()
+        .register_type::<HandSeq>()
+        .register_type::<HandSeqStamp>()
+        .register_type::<GraveyardSeq>()
+        .register_type::<GraveyardSeqStamp>();
     }
 }
