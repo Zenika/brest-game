@@ -19,17 +19,6 @@ pub fn enable_anima<F: QueryFilter>(
         let clip_handle = animations.add(AnimationClip::default());
         let node_index = graph.add_clip(clip_handle.clone(), 1., graph.root);
 
-        // Anima Mutable (Set) TED API (TED = Transform / Easings / Durations)
-        // let mut anima = Anima::new(target_id, clip_handle, node_index);
-        // anima
-        //     .set_transform(transform)
-        //     .set_easings((
-        //         Easing::CubicInOut.into(),
-        //         Easing::CubicInOut.into(),
-        //         Easing::ElasticInOut.into(),
-        //     ))
-        //     .set_durations((0.5, 0.5, 0.5));
-
         // Anima Immutable (With) TED API (TED = Transform / Easings / Durations)
         let anima = Anima::new(target_id, clip_handle, node_index)
             .with_transform(transform)

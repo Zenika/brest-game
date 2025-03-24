@@ -1,6 +1,6 @@
 use std::f32::consts::PI;
 
-use anima::{Anima, SetTED, WithTRS};
+use anima::{Anima, WithTED, WithTRS};
 use bevy::prelude::*;
 
 use super::{
@@ -52,11 +52,11 @@ pub fn cycle_location_on_click(trigger: Trigger<Click>, mut query: Query<&mut Ca
 pub fn place_on_board(mut query: Query<(&CardLocation, &mut Anima), Changed<CardLocation>>) {
     for (card_location, mut anima) in &mut query {
         if let CardLocation::Board = card_location {
-            anima.set_transform((
+            anima.set_if_neq(anima.with_transform((
                 Vec3::new(0., -2., TRANSLATION_GAP),
                 Quat::from_rotation_x(0.),
                 None,
-            ));
+            )));
         }
     }
 }
