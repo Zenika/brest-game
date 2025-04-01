@@ -1,16 +1,16 @@
 use bevy::prelude::*;
 
 use super::{
-    bundles::CardBundle,
     components::{CardLocation, CardType},
     resources::{CardMaterials, CardMesh},
-    systems::{play_on_click, update_material_on_pointer_out, update_material_on_pointer_over},
+    systems::{
+        cycle_location_on_click, update_material_on_pointer_out, update_material_on_pointer_over,
+    },
 };
 
 pub struct SpawnCard {
     pub index: usize,
     pub card_type: CardType,
-    pub x: f32,
 }
 
 impl Command for SpawnCard {
@@ -18,34 +18,35 @@ impl Command for SpawnCard {
         let card_mesh = world.resource::<CardMesh>();
         let card_materials = world.resource::<CardMaterials>();
 
-        let bundle = CardBundle {
-            name: Name::new(format!("Card {}", self.index)),
-            card_type: self.card_type,
-            card_location: CardLocation::HAND,
-            mesh: Mesh3d((*card_mesh).clone()),
-            mesh_material: MeshMaterial3d(card_materials.base.clone()),
-            transform: Transform::from_xyz(self.x, 0., 0.),
-        };
+        let base_bundle = (
+            Name::new(format!("Card {}", self.index)),
+            self.card_type,
+            CardLocation::Deck,
+        );
 
-        world
-            .commands()
-            .spawn(bundle)
+        let rendering_bundle = (
+            Transform::from_xyz(0., 0., 1.),
+            Mesh3d((*card_mesh).clone()),
+            MeshMaterial3d(card_materials.base.clone()),
+        );
+
+        let mut commands = world.commands();
+
+        commands
+            .spawn(base_bundle)
+            .insert(rendering_bundle)
             .observe(update_material_on_pointer_over)
             .observe(update_material_on_pointer_out)
-            .observe(play_on_click);
+            .observe(cycle_location_on_click);
     }
 }
 
 pub trait SpawnCardExt {
-    fn spawn_card(&mut self, index: usize, card_type: CardType, x: f32);
+    fn spawn_card(&mut self, index: usize, card_type: CardType);
 }
 
-impl<'w, 's> SpawnCardExt for Commands<'w, 's> {
-    fn spawn_card(&mut self, index: usize, card_type: CardType, x: f32) {
-        self.queue(SpawnCard {
-            index,
-            card_type,
-            x,
-        });
+impl SpawnCardExt for Commands<'_, '_> {
+    fn spawn_card(&mut self, index: usize, card_type: CardType) {
+        self.queue(SpawnCard { index, card_type });
     }
 }

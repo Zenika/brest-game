@@ -1,14 +1,15 @@
 mod card;
 mod scene;
 
+use anima::AnimaPlugin;
 use bevy::{
     color::palettes::tailwind::{GRAY_50, ROSE_600, ROSE_800, TEAL_50},
     prelude::*,
 };
 use bevy_inspector_egui::quick::WorldInspectorPlugin;
 
-use card::plugins::CardPlugin;
-use scene::plugins::ScenePlugin;
+use card::CardPlugin;
+use scene::ScenePlugin;
 
 fn main() {
     App::new()
@@ -16,6 +17,7 @@ fn main() {
             DefaultPlugins,
             MeshPickingPlugin,
             WorldInspectorPlugin::new(),
+            AnimaPlugin,
         ))
         .add_plugins(ScenePlugin {
             key_light_illuminance: light_consts::lux::OVERCAST_DAY,

@@ -1,4 +1,6 @@
 mod constants;
-pub mod plugins;
+mod plugins;
 mod resources;
 mod systems;
+
+pub use plugins::*;

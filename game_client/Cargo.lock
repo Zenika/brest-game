@@ -177,6 +177,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "anima"
+version = "0.1.0"
+dependencies = [
+ "bevy",
+]
+
+[[package]]
 name = "approx"
 version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2263,6 +2270,7 @@ dependencies = [
 name = "game_client"
 version = "0.1.0"
 dependencies = [
+ "anima",
  "bevy",
  "bevy-inspector-egui",
  "log",
