@@ -1,6 +1,6 @@
 use std::ops::Deref;
 
-use bevy::{ecs::system::SystemParam, prelude::*};
+use bevy::{core_pipeline::tonemapping::Tonemapping, ecs::system::SystemParam, prelude::*};
 
 use super::{
     constants::{BOARD_SIDE_LENGTH, CAMERA_POSITION, CAMERA_TARGET, CAMERA_UP},
@@ -11,6 +11,7 @@ pub fn setup_camera(mut commands: Commands) {
     commands.spawn((
         Name::new("Camera"),
         Camera3d::default(),
+        Tonemapping::BlenderFilmic,
         Transform::from_translation(CAMERA_POSITION).looking_at(CAMERA_TARGET, CAMERA_UP),
     ));
 }
