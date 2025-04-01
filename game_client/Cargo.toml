@@ -3,7 +3,7 @@ resolver = "2"
 members = ["crates/*"]
 
 [workspace.dependencies]
-bevy = { version = "0.15.3", features = ["dynamic_linking"] }
+bevy = { version = "0.15.3", features = ["dynamic_linking", "bevy_dev_tools"] }
 
 [package]
 name = "game_client"
@@ -12,6 +12,7 @@ edition = "2024"
 
 [dependencies]
 anima = { path = "./crates/anima" }
+entity_event = { path = "./crates/entity_event" }
 bevy = { workspace = true }
 bevy-inspector-egui = "0.29.1"
 log = { version = "*", features = [
