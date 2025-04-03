@@ -2054,6 +2054,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "entity_event"
+version = "0.1.0"
+dependencies = [
+ "bevy",
+]
+
+[[package]]
 name = "epaint"
 version = "0.30.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2302,6 +2309,7 @@ dependencies = [
  "anima",
  "bevy",
  "bevy-inspector-egui",
+ "entity_event",
  "log",
 ]
 
