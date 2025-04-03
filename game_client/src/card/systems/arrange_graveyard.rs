@@ -1,16 +1,14 @@
-use std::f32::consts::PI;
-
 use anima::{Anima, WithTRS};
 use bevy::prelude::*;
 
 use crate::card::{
     components::{CardLocation, GraveyardSequenceStamp},
-    constants::GAP,
+    constants::{CARD_THICKNESS, GRAVEYARD_CARD_ROTATION, GRAVEYARD_CARD_X, GRAVEYARD_CARD_Y},
 };
 
 pub fn arrange_graveyard(mut query: Query<(&CardLocation, &GraveyardSequenceStamp, &mut Anima)>) {
     let target_location = CardLocation::Graveyard;
-    let target_rotation = Quat::from_rotation_y(-PI);
+    let target_rotation = *GRAVEYARD_CARD_ROTATION;
 
     let mut cards: Vec<_> = query
         .iter_mut()
@@ -23,7 +21,11 @@ pub fn arrange_graveyard(mut query: Query<(&CardLocation, &GraveyardSequenceStam
         .into_iter()
         .enumerate()
         .for_each(|(index, (_, _, mut anima))| {
-            let target_translation = Vec3::new(4., -2., (index as f32 + 1.) * GAP);
+            let target_translation = Vec3::new(
+                GRAVEYARD_CARD_X,
+                GRAVEYARD_CARD_Y,
+                CARD_THICKNESS * (index + 1) as f32,
+            );
 
             anima.set_if_neq(
                 anima
