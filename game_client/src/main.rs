@@ -46,7 +46,7 @@ fn main() {
         })
         .add_plugins(CardPlugin {
             base_card_color: ROSE_800.into(),
-            over_card_color: ROSE_600.into(),
+            hover_card_color: ROSE_600.into(),
         })
         .run();
 }

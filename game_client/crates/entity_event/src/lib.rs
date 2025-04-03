@@ -7,16 +7,22 @@ use bevy::ecs::{
 };
 
 #[derive(Event)]
-pub struct EntityEvent<Ev> {
-    pub entity: Entity,
-    event_marker: PhantomData<Ev>,
+pub struct EntityEvent<E> {
+    entity: Entity,
+    event_marker: PhantomData<E>,
 }
 
-impl<Ev> From<Entity> for EntityEvent<Ev> {
+impl<E> EntityEvent<E> {
+    pub fn entity(&self) -> Entity {
+        self.entity
+    }
+}
+
+impl<E> From<Entity> for EntityEvent<E> {
     fn from(value: Entity) -> Self {
         Self {
             entity: value,
-            event_marker: PhantomData::<Ev>,
+            event_marker: PhantomData::<E>,
         }
     }
 }
