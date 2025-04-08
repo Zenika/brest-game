@@ -1,16 +1,14 @@
-use std::f32::consts::PI;
-
 use anima::{Anima, WithTRS};
 use bevy::prelude::*;
 
 use crate::card::{
     components::{CardLocation, DeckSequenceStamp},
-    constants::GAP,
+    constants::{CARD_THICKNESS, DECK_CARD_ROTATION, DECK_CARD_X, DECK_CARD_Y},
 };
 
 pub fn arrange_deck(mut query: Query<(&CardLocation, &DeckSequenceStamp, &mut Anima)>) {
     let target_location = CardLocation::Deck;
-    let target_rotation = Quat::from_rotation_y(-PI);
+    let target_rotation = *DECK_CARD_ROTATION;
 
     let mut cards: Vec<_> = query
         .iter_mut()
@@ -23,7 +21,11 @@ pub fn arrange_deck(mut query: Query<(&CardLocation, &DeckSequenceStamp, &mut An
         .into_iter()
         .enumerate()
         .for_each(|(index, (_, _, mut anima))| {
-            let target_translation = Vec3::new(4., -4., (index as f32 + 1.) * GAP);
+            let target_translation = Vec3::new(
+                DECK_CARD_X,
+                DECK_CARD_Y,
+                CARD_THICKNESS * (index + 1) as f32,
+            );
 
             anima.set_if_neq(
                 anima
