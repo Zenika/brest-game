@@ -8,6 +8,11 @@ use super::components::CardLocation;
 pub type CardEvent<E> = EntityEvent<E>;
 
 #[derive(Event)]
+pub struct DrawEvent {
+    pub entity: Entity,
+}
+
+#[derive(Event)]
 pub struct LocatedCardEvent<E> {
     entity: Entity,
     location: CardLocation,

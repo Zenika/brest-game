@@ -5,6 +5,7 @@ mod events;
 mod fixtures;
 mod plugins;
 mod resources;
+mod states;
 mod systems;
 
 pub use plugins::*;

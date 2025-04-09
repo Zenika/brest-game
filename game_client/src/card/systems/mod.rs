@@ -8,6 +8,9 @@ mod place_on_board;
 mod setup_cards;
 mod translocate_on;
 
+pub mod on_turn_starting;
+pub mod play_your_card;
+
 pub use apply_material_on::*;
 pub use arrange_deck::*;
 pub use arrange_graveyard::*;

@@ -2,9 +2,9 @@ use bevy::prelude::*;
 use entity_event::send_entity_event_on;
 
 use crate::card::{
-    components::{CardLocation, CardType},
+    components::{CardLocation, CardType, DeckSequenceStamp},
     events::CardEvent,
-    resources::{BaseCardMaterial, CardMaterial, CardMesh},
+    resources::{BaseCardMaterial, CardMaterial, CardMesh, DeckSequence},
 };
 
 pub struct SpawnCard {
@@ -25,11 +25,15 @@ impl Command for SpawnCard {
             MeshMaterial3d(card_material.as_material()),
         );
 
+        let mut deck_seq: Mut<'_, DeckSequence> = world.resource_mut::<DeckSequence>();
+        let deck_seq_stamp = DeckSequenceStamp(deck_seq.next());
+
         let mut commands = world.commands();
 
         commands
             .spawn(base_bundle)
             .insert(rendering_bundle)
+            .insert(deck_seq_stamp)
             .observe(send_entity_event_on::<Pointer<Over>, CardEvent<Pointer<Over>>>)
             .observe(send_entity_event_on::<Pointer<Out>, CardEvent<Pointer<Out>>>)
             .observe(send_entity_event_on::<Pointer<Click>, CardEvent<Pointer<Click>>>);
