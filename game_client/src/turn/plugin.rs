@@ -2,9 +2,9 @@ use bevy::prelude::*;
 
 use super::{TurnPhase, TurnPhaseTimer, reset_timer_on_transition};
 
-pub struct TurnsPlugin;
+pub struct TurnPlugin;
 
-impl Plugin for TurnsPlugin {
+impl Plugin for TurnPlugin {
     fn build(&self, app: &mut bevy::prelude::App) {
         app.init_state::<TurnPhase>()
             .insert_resource(TurnPhaseTimer::new(1.0))

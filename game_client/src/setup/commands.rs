@@ -1,5 +1,6 @@
 use bevy::prelude::*;
 use entity_event::send_entity_event_on;
+use shared::CardID;
 
 use crate::{
     card_location::{CardEvent, CardLocation},
@@ -9,6 +10,7 @@ use crate::{
 };
 
 pub struct SpawnCard {
+    pub index: u8,
     pub name: String,
 }
 
@@ -17,7 +19,7 @@ impl Command for SpawnCard {
         let card_mesh = world.resource::<CardMesh>();
         let card_material = world.resource::<BaseCardMaterial>();
 
-        let base_bundle = (Name::new(self.name), CardLocation::Deck);
+        let base_bundle = (Name::new(self.name), CardID(self.index), CardLocation::Deck);
 
         let rendering_bundle = (
             Transform::from_xyz(0., 0., 1.),
@@ -41,11 +43,11 @@ impl Command for SpawnCard {
 }
 
 pub trait SpawnCardExt {
-    fn spawn_card(&mut self, name: String);
+    fn spawn_card(&mut self, index: u8, name: String);
 }
 
 impl SpawnCardExt for Commands<'_, '_> {
-    fn spawn_card(&mut self, name: String) {
-        self.queue(SpawnCard { name });
+    fn spawn_card(&mut self, index: u8, name: String) {
+        self.queue(SpawnCard { index, name });
     }
 }

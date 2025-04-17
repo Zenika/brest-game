@@ -1,9 +1,10 @@
 [workspace]
 resolver = "2"
-members = ["crates/*"]
+members = ["crates/*", "framework/*"]
 
 [workspace.dependencies]
 bevy = { version = "0.15.3", features = ["dynamic_linking", "bevy_dev_tools"] }
+shared = { path = "./crates/shared" }
 
 [package]
 name = "game_client"
@@ -11,15 +12,16 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-anima = { path = "./crates/anima" }
-entity_event = { path = "./crates/entity_event" }
 bevy = { workspace = true }
+shared = { workspace = true }
+anima = { path = "./framework/anima" }
+entity_event = { path = "./framework/entity_event" }
+mock_server = { path = "./crates/mock_server" }
 bevy-inspector-egui = "0.29.1"
 log = { version = "*", features = [
     "max_level_debug",
     "release_max_level_warn",
 ] }
-
 
 [profile.dev]
 opt-level = 1

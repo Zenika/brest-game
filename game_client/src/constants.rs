@@ -5,6 +5,11 @@ use std::{
 
 use bevy::prelude::*;
 
+pub const CAMERA_POSITION: Vec3 = Vec3::new(0., -60., 60.);
+pub const CAMERA_TARGET: Vec3 = Vec3::ZERO;
+pub const CAMERA_UP: Dir3 = Dir3::Y;
+pub const BOARD_SIDE_LENGTH: f32 = 60.;
+
 pub const CARDS_COUNT: u8 = 15;
 
 pub const CARD_WIDTH: f32 = 6.3;

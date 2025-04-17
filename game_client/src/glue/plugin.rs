@@ -1,5 +1,6 @@
 use anima::enable_anima;
 use bevy::prelude::*;
+use shared::ContestantID;
 
 use crate::{
     card_location::CardLocation,
@@ -9,6 +10,7 @@ use crate::{
 
 use super::{
     events::*,
+    resources::{OpponentID, PlayerID},
     states::{OpponentPlayed, PlayerPlayed},
     systems::*,
 };
@@ -21,6 +23,8 @@ impl Plugin for GluePlugin {
     fn build(&self, app: &mut bevy::app::App) {
         app.init_state::<PlayerPlayed>()
             .init_state::<OpponentPlayed>()
+            .insert_resource(PlayerID(ContestantID(0)))
+            .insert_resource(OpponentID(ContestantID(1)))
             .add_event::<DrawEvent>()
             .add_systems(PostStartup, enable_anima::<With<CardLocation>>)
             .add_systems(PostStartup, set_turn_phase(&TurnPhase::Starting))
@@ -30,10 +34,10 @@ impl Plugin for GluePlugin {
                 (
                     (
                         apply_hover_material_on::<Hover>(Some(CardLocation::Hand)),
-                        play_player_card,
+                        request_player_play,
                     )
                         .run_if(in_state(PlayerPlayed::No)),
-                    play_opponent_card.run_if(in_state(OpponentPlayed::No)),
+                    request_opponent_play.run_if(in_state(OpponentPlayed::No)),
                     check_for_playing_phase_done,
                 )
                     .run_if(in_state(TurnPhase::Playing)),
@@ -56,12 +60,15 @@ impl Plugin for GluePlugin {
                     arrange_hand,
                     arrange_graveyard,
                     handle_draw_event,
+                    handle_play,
                 ),
             )
             // Components
             .register_type::<State<PlayerPlayed>>()
             .register_type::<NextState<PlayerPlayed>>()
             .register_type::<State<OpponentPlayed>>()
-            .register_type::<NextState<OpponentPlayed>>();
+            .register_type::<NextState<OpponentPlayed>>()
+            .register_type::<PlayerID>()
+            .register_type::<OpponentID>();
     }
 }
