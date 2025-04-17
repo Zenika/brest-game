@@ -3,10 +3,8 @@ use shared::{CardID, ContestantID, Play, PlayRequest};
 
 use crate::{
     card_location::{CardLocation, LocatedCardEvent},
-    glue::{
-        resources::{OpponentID, PlayerID},
-        states::{OpponentPlayed, PlayerPlayed},
-    },
+    glue::resources::{OpponentID, PlayerID},
+    turn::{ContestantPlayed, OpponentPlayed, PlayerPlayed},
 };
 
 pub fn request_player_play(
@@ -45,11 +43,11 @@ pub fn handle_play(
 
     for &Play(contestant_id, played_card_id) in events_in.read() {
         if contestant_id == player_contestant_id {
-            player_played_next_state.set(PlayerPlayed::Yes);
+            player_played_next_state.set(PlayerPlayed(ContestantPlayed::Yes));
         }
 
         if contestant_id == opponent_contestant_id {
-            opponent_played_next_state.set(OpponentPlayed::Yes);
+            opponent_played_next_state.set(OpponentPlayed(ContestantPlayed::Yes));
         }
 
         for (&card_id, mut location) in query.iter_mut() {

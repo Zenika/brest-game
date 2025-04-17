@@ -1,16 +1,18 @@
 use bevy::prelude::*;
 
 use crate::{
-    glue::states::{OpponentPlayed, PlayerPlayed},
-    turn::TurnPhase,
+    round::RoundPhase,
+    turn::{ContestantPlayed, OpponentPlayed, PlayerPlayed},
 };
 
 pub fn check_for_playing_phase_done(
     player_played: Res<State<PlayerPlayed>>,
     opponent_played: Res<State<OpponentPlayed>>,
-    mut next_state: ResMut<NextState<TurnPhase>>,
+    mut next_state: ResMut<NextState<RoundPhase>>,
 ) {
-    if *player_played == PlayerPlayed::Yes && *opponent_played == OpponentPlayed::Yes {
-        next_state.set(TurnPhase::Resolving);
+    if *player_played == PlayerPlayed(ContestantPlayed::Yes)
+        && *opponent_played == OpponentPlayed(ContestantPlayed::Yes)
+    {
+        next_state.set(RoundPhase::Resolving);
     }
 }

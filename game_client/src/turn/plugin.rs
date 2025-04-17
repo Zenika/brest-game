@@ -1,17 +1,30 @@
 use bevy::prelude::*;
 
-use super::{TurnPhase, TurnPhaseTimer, reset_timer_on_transition};
+#[cfg(debug_assertions)]
+use bevy_inspector_egui::quick::StateInspectorPlugin;
+
+use super::{ContestantPlayed, OpponentPlayed, PlayerPlayed};
 
 pub struct TurnPlugin;
 
 impl Plugin for TurnPlugin {
     fn build(&self, app: &mut bevy::prelude::App) {
-        app.init_state::<TurnPhase>()
-            .insert_resource(TurnPhaseTimer::new(1.0))
-            .add_systems(Update, reset_timer_on_transition())
-            .register_type::<TurnPhase>()
-            .register_type::<TurnPhaseTimer>()
-            .register_type::<State<TurnPhase>>()
-            .register_type::<NextState<TurnPhase>>();
+        app.register_type::<ContestantPlayed>();
+
+        app.init_state::<PlayerPlayed>()
+            .register_type::<PlayerPlayed>()
+            .register_type::<State<PlayerPlayed>>()
+            .register_type::<NextState<PlayerPlayed>>();
+
+        #[cfg(debug_assertions)]
+        app.add_plugins(StateInspectorPlugin::<PlayerPlayed>::default());
+
+        app.init_state::<OpponentPlayed>()
+            .register_type::<OpponentPlayed>()
+            .register_type::<State<OpponentPlayed>>()
+            .register_type::<NextState<OpponentPlayed>>();
+
+        #[cfg(debug_assertions)]
+        app.add_plugins(StateInspectorPlugin::<OpponentPlayed>::default());
     }
 }

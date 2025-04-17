@@ -1,19 +1,17 @@
 use crate::{
     card_location::CardLocation,
-    glue::{
-        events::DrawEvent,
-        states::{OpponentPlayed, PlayerPlayed},
-    },
+    glue::events::DrawEvent,
+    round::RoundPhase,
     sequences::DeckSequenceStamp,
-    turn::TurnPhase,
+    turn::{ContestantPlayed, OpponentPlayed, PlayerPlayed},
 };
 
 use bevy::prelude::*;
 
-pub fn on_turn_starting(
+pub fn on_round_starting(
     mut query: Query<(&CardLocation, &DeckSequenceStamp, Entity)>,
     mut draw_events: EventWriter<DrawEvent>,
-    mut next_state: ResMut<NextState<TurnPhase>>,
+    mut next_state: ResMut<NextState<RoundPhase>>,
     mut next_player_played: ResMut<NextState<PlayerPlayed>>,
     mut next_opponent_played: ResMut<NextState<OpponentPlayed>>,
 ) {
@@ -28,7 +26,7 @@ pub fn on_turn_starting(
         draw_events.send(DrawEvent { entity });
     });
 
-    next_state.set(TurnPhase::Playing);
-    next_player_played.set(PlayerPlayed::No);
-    next_opponent_played.set(OpponentPlayed::No);
+    next_state.set(RoundPhase::Playing);
+    next_player_played.set(PlayerPlayed(ContestantPlayed::No));
+    next_opponent_played.set(OpponentPlayed(ContestantPlayed::No));
 }
