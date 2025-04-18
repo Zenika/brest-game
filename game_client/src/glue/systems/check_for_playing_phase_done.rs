@@ -5,7 +5,7 @@ use crate::{
     turn::{ContestantPlayed, OpponentPlayed, PlayerPlayed},
 };
 
-pub fn check_for_playing_phase_done(
+pub fn end_playing_phase_policy(
     player_played: Res<State<PlayerPlayed>>,
     opponent_played: Res<State<OpponentPlayed>>,
     mut next_state: ResMut<NextState<RoundPhase>>,

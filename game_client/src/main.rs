@@ -1,5 +1,6 @@
 mod app;
 mod battle;
+mod battle_round;
 mod card_color;
 mod card_location;
 mod card_material;

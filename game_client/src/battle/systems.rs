@@ -1,19 +1,19 @@
 use bevy::{ecs::schedule::NodeConfigs, prelude::*};
 
-use super::{RoundPhase, RoundPhaseTimer};
+use super::{BattlePhase, BattlePhaseTimer};
 
-pub fn set_phase(phase: &RoundPhase) -> impl Fn(ResMut<NextState<RoundPhase>>) {
-    |mut next_state: ResMut<NextState<RoundPhase>>| next_state.set(phase.clone())
+pub fn set_phase(phase: &BattlePhase) -> impl Fn(ResMut<NextState<BattlePhase>>) {
+    |mut next_state: ResMut<NextState<BattlePhase>>| next_state.set(phase.clone())
 }
 
 // Aliases to shorten the closure header (hard to read when 3 lines long)
 type RTime<'a> = Res<'a, Time>;
-type RMTimer<'a> = ResMut<'a, RoundPhaseTimer>;
-type RMNextState<'a> = ResMut<'a, NextState<RoundPhase>>;
+type RMTimer<'a> = ResMut<'a, BattlePhaseTimer>;
+type RMNextState<'a> = ResMut<'a, NextState<BattlePhase>>;
 
 pub fn transition_on_timer_policy(
-    from: &'static RoundPhase,
-    to: &'static RoundPhase,
+    from: &'static BattlePhase,
+    to: &'static BattlePhase,
 ) -> NodeConfigs<Box<(dyn System<In = (), Out = ()> + 'static)>> {
     (move |time: RTime, mut timer: RMTimer, mut next_state: RMNextState| {
         if timer.tick(time.delta()).just_finished() {

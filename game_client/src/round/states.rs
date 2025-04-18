@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-#[derive(States, Debug, Clone, PartialEq, Eq, Hash, Default, Reflect)]
+#[derive(States, SystemSet, Debug, Clone, PartialEq, Eq, Hash, Default, Reflect)]
 pub enum RoundPhase {
     #[default]
     Waiting,
