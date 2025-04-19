@@ -1,6 +1,13 @@
 use bevy::ecs::system::Commands;
 
-use crate::constants::{BOARD_SIDE_LENGTH, CAMERA_POSITION, CAMERA_TARGET, CAMERA_UP, CARDS_COUNT};
+use crate::{
+    board_locations::{DeckPile, GraveyardPile, Player},
+    constants::{
+        BOARD_SIDE_LENGTH, CAMERA_POSITION, CAMERA_TARGET, CAMERA_UP, CARDS_COUNT,
+        PLAYER_DECK_PILE_ROTATION, PLAYER_DECK_PILE_X, PLAYER_DECK_PILE_Y,
+        PLAYER_GRAVEYARD_PILE_ROTATION, PLAYER_GRAVEYARD_PILE_X, PLAYER_GRAVEYARD_PILE_Y,
+    },
+};
 
 use super::{BoardColor, SpawnCardExt};
 
@@ -63,5 +70,17 @@ pub fn setup_board(
             base_color: *board_color_param,
             ..default()
         })),
+    ));
+
+    commands.spawn((
+        DeckPile::<Player>::new(),
+        Transform::from_xyz(PLAYER_DECK_PILE_X, PLAYER_DECK_PILE_Y, 0.)
+            .with_rotation(*PLAYER_DECK_PILE_ROTATION),
+    ));
+
+    commands.spawn((
+        GraveyardPile::<Player>::new(),
+        Transform::from_xyz(PLAYER_GRAVEYARD_PILE_X, PLAYER_GRAVEYARD_PILE_Y, 0.)
+            .with_rotation(*PLAYER_GRAVEYARD_PILE_ROTATION),
     ));
 }
