@@ -2416,6 +2416,7 @@ dependencies = [
  "log",
  "mock_server",
  "shared",
+ "states_timer",
 ]
 
 [[package]]
@@ -4362,6 +4363,13 @@ name = "stackfuture"
 version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6eae92052b72ef70dafa16eddbabffc77e5ca3574be2f7bc1127b36f0a7ad7f2"
+
+[[package]]
+name = "states_timer"
+version = "0.1.0"
+dependencies = [
+ "bevy",
+]
 
 [[package]]
 name = "static_assertions"

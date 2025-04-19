@@ -2,7 +2,7 @@ use bevy::prelude::*;
 
 use crate::{battle::BattlePhase, round::RoundPhase};
 
-use super::{resources::BattleRoundCount, systems::new_round_policy};
+use super::{BattleRoundCount, new_round_policy};
 
 pub struct BattleRoundPlugin;
 

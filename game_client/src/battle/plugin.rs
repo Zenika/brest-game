@@ -2,8 +2,9 @@ use bevy::prelude::*;
 
 #[cfg(debug_assertions)]
 use bevy_inspector_egui::quick::StateInspectorPlugin;
+use states_timer::{StatesTimer, reset_timer_on_transition};
 
-use super::{BattlePhase, BattlePhaseTimer, reset_timer_on_transition};
+use super::BattlePhase;
 
 pub struct BattlePlugin;
 
@@ -17,9 +18,9 @@ impl Plugin for BattlePlugin {
         #[cfg(debug_assertions)]
         app.add_plugins(StateInspectorPlugin::<BattlePhase>::default());
 
-        app.insert_resource(BattlePhaseTimer::new(1.0))
-            .register_type::<BattlePhaseTimer>();
+        app.insert_resource(StatesTimer::<BattlePhase>::new(1.0))
+            .register_type::<StatesTimer<BattlePhase>>();
 
-        app.add_systems(Update, reset_timer_on_transition());
+        app.add_systems(Update, reset_timer_on_transition::<BattlePhase>());
     }
 }

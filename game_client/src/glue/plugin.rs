@@ -1,11 +1,13 @@
 use anima::enable_anima;
 use bevy::prelude::*;
 use shared::{ContestantID, Play};
+use states_timer::set_on_timer;
 
 use crate::{
+    battle::BattlePhase,
     card_location::CardLocation,
     card_material::{apply_base_material_on, apply_hover_material_on},
-    round::{self, RoundPhase},
+    round::RoundPhase,
     turn::{ContestantPlayed, OpponentPlayed, PlayerPlayed},
 };
 
@@ -42,6 +44,10 @@ impl Plugin for GluePlugin {
             .insert_resource(OpponentID(ContestantID(1)))
             .add_event::<DrawEvent>()
             .add_systems(PostStartup, enable_anima::<With<CardLocation>>)
+            .add_systems(
+                Update,
+                set_on_timer(BattlePhase::Started, BattlePhase::InProgress),
+            )
             .add_systems(OnEnter(RoundPhase::Starting), on_round_starting)
             .add_systems(
                 Update,
@@ -56,7 +62,7 @@ impl Plugin for GluePlugin {
             )
             .add_systems(
                 Update,
-                round::transition_on_timer_policy(&RoundPhase::Resolving, &RoundPhase::Ending),
+                set_on_timer(RoundPhase::Resolving, RoundPhase::Ending),
             )
             .add_systems(OnEnter(RoundPhase::Ending), on_round_ending)
             .add_systems(

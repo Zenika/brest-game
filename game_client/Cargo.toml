@@ -4,7 +4,6 @@ members = ["crates/*", "framework/*"]
 
 [workspace.dependencies]
 bevy = { version = "0.15.3", features = ["bevy_dev_tools"] }
-
 shared = { path = "./crates/shared" }
 
 [package]
@@ -18,6 +17,8 @@ shared = { workspace = true }
 
 anima = { path = "./framework/anima" }
 entity_event = { path = "./framework/entity_event" }
+states_timer = { path = "./framework/states_timer" }
+
 mock_server = { path = "./crates/mock_server" }
 
 bevy_dylib = "0.15.3"

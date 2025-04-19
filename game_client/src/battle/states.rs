@@ -1,9 +1,9 @@
 use bevy::prelude::*;
 
-#[derive(States, Debug, Clone, PartialEq, Eq, Hash, Default, Reflect)]
+#[derive(States, Debug, Clone, Copy, PartialEq, Eq, Hash, Default, Reflect)]
 pub enum BattlePhase {
-    Started,
     #[default]
+    Started,
     InProgress,
     Ended,
     Resolved,

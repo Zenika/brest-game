@@ -2,8 +2,9 @@ use bevy::prelude::*;
 
 #[cfg(debug_assertions)]
 use bevy_inspector_egui::quick::StateInspectorPlugin;
+use states_timer::{StatesTimer, reset_timer_on_transition};
 
-use super::{RoundPhase, RoundPhaseTimer, reset_timer_on_transition};
+use super::RoundPhase;
 
 pub struct RoundPlugin;
 
@@ -17,9 +18,9 @@ impl Plugin for RoundPlugin {
         #[cfg(debug_assertions)]
         app.add_plugins(StateInspectorPlugin::<RoundPhase>::default());
 
-        app.insert_resource(RoundPhaseTimer::new(1.0))
-            .register_type::<RoundPhaseTimer>();
+        app.insert_resource(StatesTimer::<RoundPhase>::new(1.0))
+            .register_type::<StatesTimer<RoundPhase>>();
 
-        app.add_systems(Update, reset_timer_on_transition());
+        app.add_systems(Update, reset_timer_on_transition::<RoundPhase>());
     }
 }

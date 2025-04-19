@@ -1,17 +1,15 @@
 use bevy::prelude::*;
+use states_timer::StatesTimer;
 
-use crate::{
-    battle::{BattlePhase, BattlePhaseTimer},
-    round::{RoundPhase, RoundPhaseTimer},
-};
+use crate::{battle::BattlePhase, round::RoundPhase};
 
-use super::resources::BattleRoundCount;
+use super::BattleRoundCount;
 
 pub fn new_round_policy(
     time: Res<Time>,
     mut battle_round_count: ResMut<BattleRoundCount>,
-    mut round_phase_timer: ResMut<RoundPhaseTimer>,
-    mut battle_phase_timer: ResMut<BattlePhaseTimer>,
+    mut round_phase_timer: ResMut<StatesTimer<RoundPhase>>,
+    mut battle_phase_timer: ResMut<StatesTimer<BattlePhase>>,
     mut next_round_phase: ResMut<NextState<RoundPhase>>,
     mut next_battle_phase: ResMut<NextState<BattlePhase>>,
 ) {

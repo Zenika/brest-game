@@ -22,7 +22,7 @@ impl Command for SpawnCard {
         let base_bundle = (Name::new(self.name), CardID(self.index), CardLocation::Deck);
 
         let rendering_bundle = (
-            Transform::from_xyz(0., 0., 1.),
+            Transform::from_xyz(100., 0., 1.),
             Mesh3d((*card_mesh).clone()),
             MeshMaterial3d(card_material.as_material()),
         );
