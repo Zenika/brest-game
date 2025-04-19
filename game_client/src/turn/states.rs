@@ -1,11 +1,14 @@
 use bevy::prelude::*;
 
-#[derive(States, Debug, Clone, PartialEq, Eq, Hash, Default, Reflect)]
-pub enum TurnPhase {
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Default, Reflect)]
+pub enum ContestantPlayed {
     #[default]
-    Waiting,
-    Starting,
-    Playing,
-    Resolving,
-    Ending,
+    No,
+    Yes,
 }
+
+#[derive(States, Debug, Clone, PartialEq, Eq, Hash, Default, Reflect)]
+pub struct OpponentPlayed(pub ContestantPlayed);
+
+#[derive(States, Debug, Clone, PartialEq, Eq, Hash, Default, Reflect)]
+pub struct PlayerPlayed(pub ContestantPlayed);

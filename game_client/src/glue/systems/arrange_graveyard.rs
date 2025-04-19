@@ -2,16 +2,21 @@ use anima::{Anima, WithTRS};
 use bevy::prelude::*;
 
 use crate::{
+    board_locations::{GraveyardPile, Player},
     card_location::CardLocation,
-    constants::{CARD_THICKNESS, GRAVEYARD_CARD_ROTATION, GRAVEYARD_CARD_X, GRAVEYARD_CARD_Y},
+    constants::CARD_THICKNESS,
     sequences::GraveyardSequenceStamp,
 };
 
-pub fn arrange_graveyard(mut query: Query<(&CardLocation, &GraveyardSequenceStamp, &mut Anima)>) {
-    let target_location = CardLocation::Graveyard;
-    let target_rotation = *GRAVEYARD_CARD_ROTATION;
+pub fn arrange_graveyard(
+    mut cards_query: Query<(&CardLocation, &GraveyardSequenceStamp, &mut Anima)>,
+    graveyard_pile_query: Query<(&GraveyardPile<Player>, &Transform)>,
+) {
+    let (_, graveyard_pile_transform) = graveyard_pile_query.single();
 
-    let mut cards: Vec<_> = query
+    let target_location = CardLocation::Graveyard;
+
+    let mut cards: Vec<_> = cards_query
         .iter_mut()
         .filter(|&(location, _, _)| *location == target_location)
         .collect();
@@ -23,15 +28,15 @@ pub fn arrange_graveyard(mut query: Query<(&CardLocation, &GraveyardSequenceStam
         .enumerate()
         .for_each(|(index, (_, _, mut anima))| {
             let target_translation = Vec3::new(
-                GRAVEYARD_CARD_X,
-                GRAVEYARD_CARD_Y,
+                graveyard_pile_transform.translation.x,
+                graveyard_pile_transform.translation.y,
                 CARD_THICKNESS * (index + 1) as f32,
             );
 
             anima.set_if_neq(
                 anima
                     .with_translation((target_translation, None, None))
-                    .with_rotation((target_rotation, None, None)),
+                    .with_rotation((graveyard_pile_transform.rotation, None, None)),
             );
         });
 }
