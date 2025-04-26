@@ -15,6 +15,7 @@ impl Plugin for SetupPlugin {
         app.insert_resource(AmbientLight {
             color: self.fill_light_color,
             brightness: self.fill_light_intensity,
+            ..default()
         })
         .insert_resource(BoardColor(self.board_color))
         .add_systems(

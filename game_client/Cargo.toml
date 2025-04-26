@@ -3,7 +3,7 @@ resolver = "2"
 members = ["crates/*", "framework/*"]
 
 [workspace.dependencies]
-bevy = { version = "0.15.3", features = ["bevy_dev_tools"] }
+bevy = { version = "0.16.0", features = ["bevy_dev_tools"] }
 shared = { path = "./crates/shared" }
 
 [package]
@@ -21,8 +21,8 @@ states_timer = { path = "./framework/states_timer" }
 
 mock_server = { path = "./crates/mock_server" }
 
-bevy_dylib = "0.15.3"
-bevy-inspector-egui = "0.30.0"
+bevy_dylib = "0.16.0"
+bevy-inspector-egui = "0.31.0"
 log = { version = "*", features = [
     "max_level_debug",
     "release_max_level_warn",

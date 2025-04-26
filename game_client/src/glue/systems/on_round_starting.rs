@@ -20,7 +20,7 @@ pub fn on_round_starting(
     cards.sort_by(|(_, seq_stamp_a, _), (_, seq_stamp_b, _)| seq_stamp_b.cmp(seq_stamp_a));
 
     cards.into_iter().take(3).for_each(|(_, _, entity)| {
-        draw_events.send(DrawEvent { entity });
+        draw_events.write(DrawEvent { entity });
     });
 
     next_state.set(RoundPhase::Playing);

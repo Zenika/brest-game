@@ -3,7 +3,7 @@ use bevy::prelude::*;
 
 use crate::{
     board_locations::{DeckPile, Player},
-    card_location::{CardLocation, Deck},
+    card_location::Deck,
     constants::CARD_THICKNESS,
     sequences::DeckSequenceStamp,
 };
@@ -11,8 +11,8 @@ use crate::{
 pub fn arrange_deck(
     mut cards_query: Query<(&Deck, &DeckSequenceStamp, &mut Anima)>,
     deck_pile_query: Query<(&DeckPile<Player>, &Transform)>,
-) {
-    let (_, deck_pile_transform) = deck_pile_query.single();
+) -> Result {
+    let (_, deck_pile_transform) = deck_pile_query.single()?;
 
     let mut cards: Vec<_> = cards_query.iter_mut().collect();
 
@@ -35,4 +35,6 @@ pub fn arrange_deck(
                     .with_rotation((deck_pile_transform.rotation, None, None)),
             );
         });
+
+    Ok(())
 }

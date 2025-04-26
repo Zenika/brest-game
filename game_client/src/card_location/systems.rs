@@ -7,6 +7,6 @@ pub fn locate_card_event<E: Event, Location: Component + CardLocation>(
     mut located_events: EventWriter<LocatedCardEvent<E, Location>>,
 ) {
     for event in card_events.read() {
-        located_events.send(LocatedCardEvent::new(event.entity()));
+        located_events.write(LocatedCardEvent::new(event.entity()));
     }
 }

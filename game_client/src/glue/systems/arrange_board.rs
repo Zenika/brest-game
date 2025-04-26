@@ -10,8 +10,8 @@ use crate::{
 pub fn arrange_board(
     mut query: Query<&mut Anima, Added<Played>>,
     played_pile_query: Query<(&PlayedPile<Player>, &Transform)>,
-) {
-    let (_, played_pile_transform) = played_pile_query.single();
+) -> Result {
+    let (_, played_pile_transform) = played_pile_query.single()?;
 
     for mut anima in &mut query {
         anima.set_if_neq(anima.with_transform((
@@ -24,4 +24,6 @@ pub fn arrange_board(
             None,
         )));
     }
+
+    Ok(())
 }
