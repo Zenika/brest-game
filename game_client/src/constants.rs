@@ -32,6 +32,7 @@ pub const PLAYER_DECK_PILE_X: f32 = 24.;
 pub const PLAYER_DECK_PILE_Y: f32 = -24.;
 pub static PLAYER_DECK_PILE_ROTATION: LazyLock<Quat> = LazyLock::new(|| Quat::from_rotation_y(-PI));
 
-pub const PLAYED_CARD_X: f32 = 0.;
-pub const PLAYED_CARD_Y: f32 = -12.;
-pub static PLAYED_CARD_ROTATION: LazyLock<Quat> = LazyLock::new(|| Quat::from_rotation_x(0.));
+pub const PLAYER_PLAYED_PILE_X: f32 = 0.;
+pub const PLAYER_PLAYED_PILE_Y: f32 = -12.;
+pub static PLAYER_PLAYED_PILE_ROTATION: LazyLock<Quat> =
+    LazyLock::new(|| Quat::from_rotation_x(0.));

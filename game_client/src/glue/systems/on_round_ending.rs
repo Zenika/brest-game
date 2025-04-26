@@ -1,11 +1,17 @@
 use bevy::prelude::*;
 
-use crate::card_location::CardLocation;
+use crate::card_location::{Graveyard, Hand, Played};
 
-pub fn on_round_ending(mut query: Query<&mut CardLocation>) {
-    query.iter_mut().for_each(|mut location| {
-        if *location == CardLocation::Board || *location == CardLocation::Hand {
-            *location = CardLocation::Graveyard;
-        }
+pub fn on_round_ending(
+    mut commands: Commands,
+    played_query: Query<Entity, With<Played>>,
+    hand_query: Query<Entity, With<Hand>>,
+) {
+    played_query.iter().for_each(|entity| {
+        commands.entity(entity).remove::<Played>().insert(Graveyard);
+    });
+
+    hand_query.iter().for_each(|entity| {
+        commands.entity(entity).remove::<Hand>().insert(Graveyard);
     });
 }

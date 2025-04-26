@@ -5,8 +5,8 @@ use states_timer::set_on_timer;
 
 use crate::{
     battle::BattlePhase,
-    card_location::CardLocation,
-    card_material::{apply_base_material_on, apply_hover_material_on},
+    card_location::{Deck, Graveyard, Hand, Played},
+    card_material::{BaseCardMaterial, HoverCardMaterial, apply_material_on},
     round::RoundPhase,
     turn::{ContestantPlayed, OpponentPlayed, PlayerPlayed},
 };
@@ -43,7 +43,7 @@ impl Plugin for GluePlugin {
         app.insert_resource(PlayerID(ContestantID(0)))
             .insert_resource(OpponentID(ContestantID(1)))
             .add_event::<DrawEvent>()
-            .add_systems(PostStartup, enable_anima::<With<CardLocation>>)
+            .add_systems(PostStartup, enable_anima::<With<Mesh3d>>)
             .add_systems(
                 Update,
                 set_on_timer(BattlePhase::Started, BattlePhase::InProgress),
@@ -52,7 +52,7 @@ impl Plugin for GluePlugin {
             .add_systems(
                 Update,
                 (
-                    apply_hover_material_on::<Pointer<Over>>(Some(CardLocation::Hand))
+                    apply_material_on::<HoverCardMaterial, Pointer<Over>, Hand>
                         .in_set(PlayerPlayedSet::No),
                     request_player_play.in_set(PlayerPlayedSet::No),
                     request_opponent_play.in_set(OpponentPlayedSet::No),
@@ -68,7 +68,10 @@ impl Plugin for GluePlugin {
             .add_systems(
                 Update,
                 (
-                    apply_base_material_on::<Pointer<Out>>(None),
+                    apply_material_on::<BaseCardMaterial, Pointer<Out>, Deck>,
+                    apply_material_on::<BaseCardMaterial, Pointer<Out>, Hand>,
+                    apply_material_on::<BaseCardMaterial, Pointer<Out>, Played>,
+                    apply_material_on::<BaseCardMaterial, Pointer<Out>, Graveyard>,
                     arrange_board,
                     arrange_deck,
                     arrange_hand,

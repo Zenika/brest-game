@@ -27,3 +27,13 @@ impl<T> GraveyardPile<T> {
         Self(PhantomData::<T>)
     }
 }
+
+#[derive(Component, Debug, Reflect)]
+#[reflect(Component)]
+pub struct PlayedPile<T>(PhantomData<T>);
+
+impl<T> PlayedPile<T> {
+    pub fn new() -> Self {
+        Self(PhantomData::<T>)
+    }
+}

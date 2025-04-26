@@ -2,20 +2,16 @@ use anima::{Anima, WithTRS};
 use bevy::prelude::*;
 
 use crate::{
-    card_location::CardLocation,
+    card_location::Hand,
     constants::{CARD_SIZE, GAP, HAND_CARD_ROTATION, HAND_CARD_Y, HAND_CARD_Z},
     sequences::HandSequenceStamp,
 };
 
-pub fn arrange_hand(mut query: Query<(&CardLocation, &HandSequenceStamp, &mut Anima)>) {
-    let target_location = CardLocation::Hand;
+pub fn arrange_hand(mut query: Query<(&Hand, &HandSequenceStamp, &mut Anima)>) {
     let target_rotation = *HAND_CARD_ROTATION;
     let x_step = CARD_SIZE.x + GAP;
 
-    let mut cards: Vec<_> = query
-        .iter_mut()
-        .filter(|&(location, _, _)| *location == target_location)
-        .collect();
+    let mut cards: Vec<_> = query.iter_mut().collect();
 
     let count = cards.len();
 

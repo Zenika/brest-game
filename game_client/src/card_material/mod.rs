@@ -1,5 +1,4 @@
 mod plugin;
-mod private;
 mod resources;
 mod systems;
 

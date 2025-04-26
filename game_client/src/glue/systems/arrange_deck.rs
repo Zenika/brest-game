@@ -3,23 +3,18 @@ use bevy::prelude::*;
 
 use crate::{
     board_locations::{DeckPile, Player},
-    card_location::CardLocation,
+    card_location::{CardLocation, Deck},
     constants::CARD_THICKNESS,
     sequences::DeckSequenceStamp,
 };
 
 pub fn arrange_deck(
-    mut cards_query: Query<(&CardLocation, &DeckSequenceStamp, &mut Anima)>,
+    mut cards_query: Query<(&Deck, &DeckSequenceStamp, &mut Anima)>,
     deck_pile_query: Query<(&DeckPile<Player>, &Transform)>,
 ) {
     let (_, deck_pile_transform) = deck_pile_query.single();
 
-    let target_location = CardLocation::Deck;
-
-    let mut cards: Vec<_> = cards_query
-        .iter_mut()
-        .filter(|&(location, _, _)| *location == target_location)
-        .collect();
+    let mut cards: Vec<_> = cards_query.iter_mut().collect();
 
     cards.sort_by(|(_, seq_stamp_a, _), (_, seq_stamp_b, _)| seq_stamp_a.cmp(seq_stamp_b));
 

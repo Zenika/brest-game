@@ -1,5 +1,5 @@
 use crate::{
-    card_location::CardLocation,
+    card_location::Deck,
     glue::events::DrawEvent,
     round::RoundPhase,
     sequences::DeckSequenceStamp,
@@ -9,16 +9,13 @@ use crate::{
 use bevy::prelude::*;
 
 pub fn on_round_starting(
-    mut query: Query<(&CardLocation, &DeckSequenceStamp, Entity)>,
+    mut query: Query<(&Deck, &DeckSequenceStamp, Entity)>,
     mut draw_events: EventWriter<DrawEvent>,
     mut next_state: ResMut<NextState<RoundPhase>>,
     mut next_player_played: ResMut<NextState<PlayerPlayed>>,
     mut next_opponent_played: ResMut<NextState<OpponentPlayed>>,
 ) {
-    let mut cards: Vec<_> = query
-        .iter_mut()
-        .filter(|&(location, _, _)| *location == CardLocation::Deck)
-        .collect();
+    let mut cards: Vec<_> = query.iter_mut().collect();
 
     cards.sort_by(|(_, seq_stamp_a, _), (_, seq_stamp_b, _)| seq_stamp_b.cmp(seq_stamp_a));
 

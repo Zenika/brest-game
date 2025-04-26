@@ -3,10 +3,10 @@ use entity_event::send_entity_event_on;
 use shared::CardID;
 
 use crate::{
-    card_location::{CardEvent, CardLocation},
+    card_location::{CardEvent, Deck},
     card_material::{BaseCardMaterial, CardMaterial},
     card_mesh::CardMesh,
-    sequences::{DeckSequence, DeckSequenceStamp},
+    sequences::{DeckSequence, DeckSequenceStamp, Sequence},
 };
 
 pub struct SpawnCard {
@@ -19,7 +19,7 @@ impl Command for SpawnCard {
         let card_mesh = world.resource::<CardMesh>();
         let card_material = world.resource::<BaseCardMaterial>();
 
-        let base_bundle = (Name::new(self.name), CardID(self.index), CardLocation::Deck);
+        let base_bundle = (Name::new(self.name), CardID(self.index), Deck);
 
         let rendering_bundle = (
             Transform::from_xyz(100., 0., 1.),

@@ -2,14 +2,11 @@ use bevy::prelude::*;
 
 use super::{CardEvent, CardLocation, LocatedCardEvent};
 
-pub fn locate_card_event<E: Event>(
+pub fn locate_card_event<E: Event, Location: Component + CardLocation>(
     mut card_events: EventReader<CardEvent<E>>,
-    mut query: Query<&CardLocation>,
-    mut located_events: EventWriter<LocatedCardEvent<E>>,
+    mut located_events: EventWriter<LocatedCardEvent<E, Location>>,
 ) {
     for event in card_events.read() {
-        if let Ok(location) = query.get_mut(event.entity()) {
-            located_events.send(LocatedCardEvent::<E>::new(event.entity(), location.clone()));
-        }
+        located_events.send(LocatedCardEvent::new(event.entity()));
     }
 }

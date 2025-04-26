@@ -3,23 +3,18 @@ use bevy::prelude::*;
 
 use crate::{
     board_locations::{GraveyardPile, Player},
-    card_location::CardLocation,
+    card_location::Graveyard,
     constants::CARD_THICKNESS,
     sequences::GraveyardSequenceStamp,
 };
 
 pub fn arrange_graveyard(
-    mut cards_query: Query<(&CardLocation, &GraveyardSequenceStamp, &mut Anima)>,
+    mut cards_query: Query<(&Graveyard, &GraveyardSequenceStamp, &mut Anima)>,
     graveyard_pile_query: Query<(&GraveyardPile<Player>, &Transform)>,
 ) {
     let (_, graveyard_pile_transform) = graveyard_pile_query.single();
 
-    let target_location = CardLocation::Graveyard;
-
-    let mut cards: Vec<_> = cards_query
-        .iter_mut()
-        .filter(|&(location, _, _)| *location == target_location)
-        .collect();
+    let mut cards: Vec<_> = cards_query.iter_mut().collect();
 
     cards.sort_by(|(_, seq_stamp_a, _), (_, seq_stamp_b, _)| seq_stamp_a.cmp(seq_stamp_b));
 

@@ -8,28 +8,22 @@ pub type CardEvent<E> = EntityEvent<E>;
 use super::CardLocation;
 
 #[derive(Event)]
-pub struct LocatedCardEvent<E> {
+pub struct LocatedCardEvent<E, Location: CardLocation> {
     entity: Entity,
-    location: CardLocation,
+    location_marker: PhantomData<Location>,
     event_marker: PhantomData<CardEvent<E>>,
 }
 
-impl<E> LocatedCardEvent<E> {
+impl<E, Location: CardLocation> LocatedCardEvent<E, Location> {
     pub fn entity(&self) -> Entity {
         self.entity
     }
 
-    pub fn location(&self) -> &CardLocation {
-        &self.location
-    }
-}
-
-impl<Ev: Event> LocatedCardEvent<Ev> {
-    pub fn new(entity: Entity, location: CardLocation) -> Self {
+    pub fn new(entity: Entity) -> Self {
         Self {
             entity,
-            location,
-            event_marker: PhantomData,
+            location_marker: PhantomData::<Location>,
+            event_marker: PhantomData::<CardEvent<E>>,
         }
     }
 }
