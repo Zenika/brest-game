@@ -1,20 +1,19 @@
 use bevy::prelude::*;
 
-use crate::card_location::CardLocation;
+use crate::card_location::{CardLocation, LocatedCardEvent};
 
-use super::{
-    BaseCardMaterial, HoverCardMaterial,
-    private::{Reader, apply_material_on},
-};
+use super::resources::CardMaterial;
 
-pub fn apply_base_material_on<E: Event>(
-    location_filter: Option<CardLocation>,
-) -> impl Fn(Reader<E>, Res<BaseCardMaterial>, Query<&mut MeshMaterial3d<StandardMaterial>>) {
-    apply_material_on::<BaseCardMaterial, E>(location_filter)
-}
+pub type Reader<'w, 's, E, L> = EventReader<'w, 's, LocatedCardEvent<E, L>>;
 
-pub fn apply_hover_material_on<E: Event>(
-    location_filter: Option<CardLocation>,
-) -> impl Fn(Reader<E>, Res<HoverCardMaterial>, Query<&mut MeshMaterial3d<StandardMaterial>>) {
-    apply_material_on::<HoverCardMaterial, E>(location_filter)
+pub fn apply_material_on<CM: CardMaterial + Resource, E: Event, Location: CardLocation>(
+    mut events: Reader<E, Location>,
+    card_material: Res<CM>,
+    mut query: Query<(&Location, &mut MeshMaterial3d<StandardMaterial>)>,
+) {
+    for event in events.read() {
+        if let Ok((_, mut material)) = query.get_mut(event.entity()) {
+            material.0 = card_material.as_material();
+        }
+    }
 }

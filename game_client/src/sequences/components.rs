@@ -10,4 +10,8 @@ pub struct HandSequenceStamp(pub u8);
 
 #[derive(Component, Reflect, PartialEq, Eq, PartialOrd, Ord)]
 #[reflect(Component)]
+pub struct PlayedSequenceStamp(pub u8);
+
+#[derive(Component, Reflect, PartialEq, Eq, PartialOrd, Ord)]
+#[reflect(Component)]
 pub struct GraveyardSequenceStamp(pub u8);

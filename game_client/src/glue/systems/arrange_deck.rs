@@ -2,19 +2,19 @@ use anima::{Anima, WithTRS};
 use bevy::prelude::*;
 
 use crate::{
-    card_location::CardLocation,
-    constants::{CARD_THICKNESS, DECK_CARD_ROTATION, DECK_CARD_X, DECK_CARD_Y},
+    board_locations::{DeckPile, Player},
+    card_location::{CardLocation, Deck},
+    constants::CARD_THICKNESS,
     sequences::DeckSequenceStamp,
 };
 
-pub fn arrange_deck(mut query: Query<(&CardLocation, &DeckSequenceStamp, &mut Anima)>) {
-    let target_location = CardLocation::Deck;
-    let target_rotation = *DECK_CARD_ROTATION;
+pub fn arrange_deck(
+    mut cards_query: Query<(&Deck, &DeckSequenceStamp, &mut Anima)>,
+    deck_pile_query: Query<(&DeckPile<Player>, &Transform)>,
+) {
+    let (_, deck_pile_transform) = deck_pile_query.single();
 
-    let mut cards: Vec<_> = query
-        .iter_mut()
-        .filter(|&(location, _, _)| *location == target_location)
-        .collect();
+    let mut cards: Vec<_> = cards_query.iter_mut().collect();
 
     cards.sort_by(|(_, seq_stamp_a, _), (_, seq_stamp_b, _)| seq_stamp_a.cmp(seq_stamp_b));
 
@@ -23,15 +23,16 @@ pub fn arrange_deck(mut query: Query<(&CardLocation, &DeckSequenceStamp, &mut An
         .enumerate()
         .for_each(|(index, (_, _, mut anima))| {
             let target_translation = Vec3::new(
-                DECK_CARD_X,
-                DECK_CARD_Y,
+                deck_pile_transform.translation.x,
+                deck_pile_transform.translation.y,
                 CARD_THICKNESS * (index + 1) as f32,
             );
 
+            // TODO: test Anima / Parenting compat
             anima.set_if_neq(
                 anima
                     .with_translation((target_translation, None, None))
-                    .with_rotation((target_rotation, None, None)),
+                    .with_rotation((deck_pile_transform.rotation, None, None)),
             );
         });
 }

@@ -1,37 +1,56 @@
 use bevy::prelude::*;
 
-use crate::card_location::CardLocation;
+use crate::card_location::{Deck, Graveyard, Hand, Played};
 
 use super::{
     DeckSequence, DeckSequenceStamp, GraveyardSequence, GraveyardSequenceStamp, HandSequence,
-    HandSequenceStamp,
+    HandSequenceStamp, PlayedSequence, PlayedSequenceStamp, Sequence,
 };
 
-pub fn increment_sequences(
+pub fn increment_deck_sequence(
     mut commands: Commands,
-    mut deck_seq: ResMut<DeckSequence>,
-    mut hand_seq: ResMut<HandSequence>,
-    mut graveyard_seq: ResMut<GraveyardSequence>,
-    query: Query<(Entity, &CardLocation), Changed<CardLocation>>,
+    mut sequence: ResMut<DeckSequence>,
+    query: Query<Entity, Added<Deck>>,
 ) {
-    for (entity, location) in &query {
-        match *location {
-            CardLocation::Hand => {
-                commands
-                    .entity(entity)
-                    .insert(HandSequenceStamp(hand_seq.next()));
-            }
-            CardLocation::Board => {}
-            CardLocation::Graveyard => {
-                commands
-                    .entity(entity)
-                    .insert(GraveyardSequenceStamp(graveyard_seq.next()));
-            }
-            CardLocation::Deck => {
-                commands
-                    .entity(entity)
-                    .insert(DeckSequenceStamp(deck_seq.next()));
-            }
-        }
+    for entity in &query {
+        commands
+            .entity(entity)
+            .insert(DeckSequenceStamp(sequence.next()));
+    }
+}
+
+pub fn increment_hand_sequence(
+    mut commands: Commands,
+    mut sequence: ResMut<HandSequence>,
+    query: Query<Entity, Added<Hand>>,
+) {
+    for entity in &query {
+        commands
+            .entity(entity)
+            .insert(HandSequenceStamp(sequence.next()));
+    }
+}
+
+pub fn increment_played_sequence(
+    mut commands: Commands,
+    mut sequence: ResMut<PlayedSequence>,
+    query: Query<Entity, Added<Played>>,
+) {
+    for entity in &query {
+        commands
+            .entity(entity)
+            .insert(PlayedSequenceStamp(sequence.next()));
+    }
+}
+
+pub fn increment_graveyard_sequence(
+    mut commands: Commands,
+    mut sequence: ResMut<GraveyardSequence>,
+    query: Query<Entity, Added<Graveyard>>,
+) {
+    for entity in &query {
+        commands
+            .entity(entity)
+            .insert(GraveyardSequenceStamp(sequence.next()));
     }
 }

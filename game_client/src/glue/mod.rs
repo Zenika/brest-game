@@ -1,6 +1,6 @@
 mod events;
 mod plugin;
-mod states;
+mod resources;
 mod systems;
 
 pub use plugin::*;
