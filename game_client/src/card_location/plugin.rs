@@ -32,8 +32,8 @@ impl Plugin for CardLocationPlugin {
 
         CardLocationPlugin::build_event::<Pointer<Out>>(app);
         CardLocationPlugin::build_event::<Pointer<Over>>(app);
-        CardLocationPlugin::build_event::<Pointer<Down>>(app);
-        CardLocationPlugin::build_event::<Pointer<Up>>(app);
+        CardLocationPlugin::build_event::<Pointer<Pressed>>(app);
+        CardLocationPlugin::build_event::<Pointer<Released>>(app);
         CardLocationPlugin::build_event::<Pointer<Click>>(app);
     }
 }

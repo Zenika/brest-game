@@ -13,6 +13,6 @@ pub fn on_play_request(
         let event_out = Play(*contestant_id, *card_id);
         println!("MockServer\ton_play_request\tOUT\t{:?}", event_out);
 
-        events_out.send(event_out);
+        events_out.write(event_out);
     }
 }

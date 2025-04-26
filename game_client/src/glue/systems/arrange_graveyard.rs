@@ -11,8 +11,8 @@ use crate::{
 pub fn arrange_graveyard(
     mut cards_query: Query<(&Graveyard, &GraveyardSequenceStamp, &mut Anima)>,
     graveyard_pile_query: Query<(&GraveyardPile<Player>, &Transform)>,
-) {
-    let (_, graveyard_pile_transform) = graveyard_pile_query.single();
+) -> Result {
+    let (_, graveyard_pile_transform) = graveyard_pile_query.single()?;
 
     let mut cards: Vec<_> = cards_query.iter_mut().collect();
 
@@ -34,4 +34,6 @@ pub fn arrange_graveyard(
                     .with_rotation((graveyard_pile_transform.rotation, None, None)),
             );
         });
+
+    Ok(())
 }

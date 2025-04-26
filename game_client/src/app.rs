@@ -23,19 +23,24 @@ use crate::debug::DebugPlugin;
 pub fn run() {
     let mut app = App::new();
 
-    app.add_plugins((
-        DefaultPlugins.set(WindowPlugin {
-            primary_window: Some(Window {
-                resolution: (1600., 900.).into(),
-                present_mode: PresentMode::AutoNoVsync,
-                ..default()
-            }),
+    // Base plugins (some are required by DebugPlugin)
+    app.add_plugins(DefaultPlugins.set(WindowPlugin {
+        primary_window: Some(Window {
+            resolution: (1600., 900.).into(),
+            present_mode: PresentMode::AutoNoVsync,
             ..default()
         }),
-        AnimaPlugin,
-        MeshPickingPlugin,
-    ))
-    .add_plugins(SetupPlugin {
+        ..default()
+    }));
+
+    #[cfg(debug_assertions)]
+    app.add_plugins(DebugPlugin);
+
+    // Support plugins
+    app.add_plugins((AnimaPlugin, MeshPickingPlugin));
+
+    // Game plugins
+    app.add_plugins(SetupPlugin {
         key_light_illuminance: light_consts::lux::OVERCAST_DAY,
         key_light_shadows_enabled: true,
         fill_light_intensity: 100.,
@@ -58,9 +63,6 @@ pub fn run() {
     .add_plugins(TurnPlugin)
     .add_plugins(GluePlugin)
     .add_plugins(MockServer);
-
-    #[cfg(debug_assertions)]
-    app.add_plugins(DebugPlugin);
 
     app.run();
 }

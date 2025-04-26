@@ -14,7 +14,7 @@ pub fn request_player_play(
 ) {
     if let Some(event) = events_in.read().last() {
         if let Ok(card_id) = query.get_mut(event.entity()) {
-            events_out.send(PlayRequest(ContestantID(0), *card_id));
+            events_out.write(PlayRequest(ContestantID(0), *card_id));
         }
     }
 }
@@ -24,7 +24,7 @@ pub fn request_opponent_play(
     mut events_out: EventWriter<PlayRequest>,
 ) {
     if keys.just_pressed(KeyCode::Space) {
-        events_out.send(PlayRequest(ContestantID(1), CardID(255))); // Fake card ID
+        events_out.write(PlayRequest(ContestantID(1), CardID(255))); // Fake card ID
     }
 }
 

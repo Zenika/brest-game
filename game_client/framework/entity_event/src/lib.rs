@@ -1,7 +1,7 @@
 use std::marker::PhantomData;
 
 use bevy::ecs::{
-    entity::Entity,
+    entity::{ContainsEntity, Entity},
     event::{Event, EventWriter},
     observer::Trigger,
 };
@@ -12,8 +12,8 @@ pub struct EntityEvent<E> {
     event_marker: PhantomData<E>,
 }
 
-impl<E> EntityEvent<E> {
-    pub fn entity(&self) -> Entity {
+impl<E> ContainsEntity for EntityEvent<E> {
+    fn entity(&self) -> Entity {
         self.entity
     }
 }
@@ -31,5 +31,5 @@ pub fn send_entity_event_on<TE: Event, EE: Event + From<Entity>>(
     trigger: Trigger<TE>,
     mut event: EventWriter<EE>,
 ) {
-    event.send(trigger.entity().into());
+    event.write(trigger.target().into());
 }
