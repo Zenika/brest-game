@@ -9,7 +9,7 @@ use crate::{
 use bevy::prelude::*;
 
 pub fn on_round_starting(
-    mut query: Query<(&Deck, &DeckSequenceStamp, Entity)>,
+    mut query: Query<(&DeckSequenceStamp, Entity), With<Deck>>,
     mut draw_events: EventWriter<DrawEvent>,
     mut next_state: ResMut<NextState<RoundPhase>>,
     mut next_player_played: ResMut<NextState<PlayerPlayed>>,
@@ -17,9 +17,10 @@ pub fn on_round_starting(
 ) {
     let mut cards: Vec<_> = query.iter_mut().collect();
 
-    cards.sort_by(|(_, seq_stamp_a, _), (_, seq_stamp_b, _)| seq_stamp_b.cmp(seq_stamp_a));
+    cards.sort_by(|(seq_stamp_a, _), (seq_stamp_b, _)| seq_stamp_b.cmp(seq_stamp_a));
 
-    cards.into_iter().take(3).for_each(|(_, _, entity)| {
+    // TODO: replace this magic number by something else
+    cards.into_iter().take(3).for_each(|(_, entity)| {
         draw_events.write(DrawEvent { entity });
     });
 

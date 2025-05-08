@@ -8,17 +8,17 @@ use crate::{
 };
 
 pub fn arrange_graveyard(
-    mut cards_query: Query<(&Graveyard, &GraveyardSequenceStamp, &mut Anima)>,
+    mut cards_query: Query<(&GraveyardSequenceStamp, &mut Anima), With<Graveyard>>,
     graveyard_pile_query: Single<&Transform, (With<PlaygroundPart>, With<Graveyard>, With<Player>)>,
 ) {
     let mut cards: Vec<_> = cards_query.iter_mut().collect();
 
-    cards.sort_by(|(_, seq_stamp_a, _), (_, seq_stamp_b, _)| seq_stamp_a.cmp(seq_stamp_b));
+    cards.sort_by(|(seq_stamp_a, _), (seq_stamp_b, _)| seq_stamp_a.cmp(seq_stamp_b));
 
     cards
         .into_iter()
         .enumerate()
-        .for_each(|(index, (_, _, mut anima))| {
+        .for_each(|(index, (_, mut anima))| {
             let target_translation = Vec3::new(
                 graveyard_pile_query.translation.x,
                 graveyard_pile_query.translation.y,
