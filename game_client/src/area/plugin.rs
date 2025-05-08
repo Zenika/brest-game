@@ -2,7 +2,7 @@ use bevy::prelude::*;
 
 use super::{
     Area, CardEvent, Deck, Graveyard, Hand, LocatedCardEvent, Opponent, Played, Player,
-    PlaygroundArea,
+    PlaygroundPart,
 };
 
 pub struct ContestantPlugin;
@@ -47,7 +47,7 @@ impl PlaygroundAreaPlugin {
 
 impl Plugin for PlaygroundAreaPlugin {
     fn build(&self, app: &mut App) {
-        app.register_type::<PlaygroundArea>();
+        app.register_type::<PlaygroundPart>();
 
         PlaygroundAreaPlugin::build_event::<Pointer<Out>>(app);
         PlaygroundAreaPlugin::build_event::<Pointer<Over>>(app);

@@ -14,7 +14,7 @@ pub struct Opponent;
 #[reflect(Component)]
 #[component(immutable)]
 #[require(Transform)]
-pub struct PlaygroundArea;
+pub struct PlaygroundPart;
 
 pub trait Area: Component + Reflect + PartialEq + Clone + Copy {}
 
