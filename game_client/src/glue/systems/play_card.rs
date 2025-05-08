@@ -51,7 +51,7 @@ pub fn handle_play(
 
         for (entity, &card_id) in query.iter_mut() {
             if card_id == played_card_id {
-                commands.entity(entity).remove::<Hand>().insert(Played);
+                commands.entity(entity).insert(Played);
             }
         }
     }

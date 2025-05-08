@@ -78,6 +78,12 @@ impl Plugin for GluePlugin {
                     arrange_graveyard,
                     handle_draw_event,
                     handle_play.run_if(on_event::<Play>),
+                    make_exclusive::<Deck, Hand>,
+                    make_exclusive::<Deck, Played>,
+                    make_exclusive::<Deck, Graveyard>,
+                    make_exclusive::<Hand, Played>,
+                    make_exclusive::<Hand, Graveyard>,
+                    make_exclusive::<Played, Graveyard>,
                 ),
             )
             // Components

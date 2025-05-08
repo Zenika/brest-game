@@ -7,7 +7,7 @@ use crate::{
 };
 
 pub fn arrange_board(
-    mut query: Query<&mut Anima, Added<Played>>,
+    mut query: Query<&mut Anima, With<Played>>,
     played_pile_query: Query<&Transform, (With<PlaygroundArea>, With<Played>, With<Player>)>,
 ) -> Result {
     let played_pile_transform = played_pile_query.single()?;
