@@ -1,12 +1,12 @@
 use bevy::prelude::*;
 
-use crate::card_location::{CardLocation, LocatedCardEvent};
+use crate::area::{Area, LocatedCardEvent};
 
 use super::resources::CardMaterial;
 
 pub type Reader<'w, 's, E, L> = EventReader<'w, 's, LocatedCardEvent<E, L>>;
 
-pub fn apply_material_on<CM: CardMaterial + Resource, E: Event, Location: CardLocation>(
+pub fn apply_material_on<CM: CardMaterial + Resource, E: Event, Location: Area>(
     mut events: Reader<E, Location>,
     card_material: Res<CM>,
     mut query: Query<(&Location, &mut MeshMaterial3d<StandardMaterial>)>,

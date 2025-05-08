@@ -2,7 +2,7 @@ use anima::{Anima, WithTRS};
 use bevy::prelude::*;
 
 use crate::{
-    card_location::Hand,
+    area::Hand,
     constants::{CARD_SIZE, GAP, HAND_CARD_ROTATION, HAND_CARD_Y, HAND_CARD_Z},
     sequences::HandSequenceStamp,
 };

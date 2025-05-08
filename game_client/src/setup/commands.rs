@@ -3,7 +3,7 @@ use entity_event::send_entity_event_on;
 use shared::CardID;
 
 use crate::{
-    card_location::{CardEvent, Deck},
+    area::{CardEvent, Deck},
     card_material::{BaseCardMaterial, CardMaterial},
     card_mesh::CardMesh,
     sequences::{DeckSequence, DeckSequenceStamp, Sequence},

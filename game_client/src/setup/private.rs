@@ -1,7 +1,7 @@
 use bevy::ecs::system::Commands;
 
 use crate::{
-    board_locations::{DeckPile, GraveyardPile, PlayedPile, Player},
+    area::{Deck, Graveyard, Played, Player, PlaygroundArea},
     constants::{
         BOARD_SIDE_LENGTH, CAMERA_POSITION, CAMERA_TARGET, CAMERA_UP, CARDS_COUNT,
         PLAYER_DECK_PILE_ROTATION, PLAYER_DECK_PILE_X, PLAYER_DECK_PILE_Y,
@@ -74,19 +74,25 @@ pub fn setup_board(
     ));
 
     commands.spawn((
-        DeckPile::<Player>::new(),
+        PlaygroundArea,
+        Deck,
+        Player,
         Transform::from_xyz(PLAYER_DECK_PILE_X, PLAYER_DECK_PILE_Y, 0.)
             .with_rotation(*PLAYER_DECK_PILE_ROTATION),
     ));
 
     commands.spawn((
-        GraveyardPile::<Player>::new(),
+        PlaygroundArea,
+        Graveyard,
+        Player,
         Transform::from_xyz(PLAYER_GRAVEYARD_PILE_X, PLAYER_GRAVEYARD_PILE_Y, 0.)
             .with_rotation(*PLAYER_GRAVEYARD_PILE_ROTATION),
     ));
 
     commands.spawn((
-        PlayedPile::<Player>::new(),
+        PlaygroundArea,
+        Played,
+        Player,
         Transform::from_xyz(PLAYER_PLAYED_PILE_X, PLAYER_PLAYED_PILE_Y, 0.)
             .with_rotation(*PLAYER_PLAYED_PILE_ROTATION),
     ));

@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 
 use crate::{
-    card_location::{Deck, Hand},
+    area::{Deck, Hand},
     glue::events::DrawEvent,
 };
 

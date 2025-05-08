@@ -2,16 +2,15 @@ use anima::{Anima, WithTED};
 use bevy::prelude::*;
 
 use crate::{
-    board_locations::{PlayedPile, Player},
-    card_location::Played,
+    area::{Played, Player, PlaygroundArea},
     constants::CARD_THICKNESS,
 };
 
 pub fn arrange_board(
     mut query: Query<&mut Anima, Added<Played>>,
-    played_pile_query: Query<(&PlayedPile<Player>, &Transform)>,
+    played_pile_query: Query<&Transform, (With<PlaygroundArea>, With<Played>, With<Player>)>,
 ) -> Result {
-    let (_, played_pile_transform) = played_pile_query.single()?;
+    let played_pile_transform = played_pile_query.single()?;
 
     for mut anima in &mut query {
         anima.set_if_neq(anima.with_transform((

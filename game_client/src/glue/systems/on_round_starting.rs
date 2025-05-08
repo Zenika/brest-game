@@ -1,5 +1,5 @@
 use crate::{
-    card_location::Deck,
+    area::Deck,
     glue::events::DrawEvent,
     round::RoundPhase,
     sequences::DeckSequenceStamp,

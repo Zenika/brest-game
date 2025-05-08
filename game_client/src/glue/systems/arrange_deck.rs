@@ -2,17 +2,16 @@ use anima::{Anima, WithTRS};
 use bevy::prelude::*;
 
 use crate::{
-    board_locations::{DeckPile, Player},
-    card_location::Deck,
+    area::{Deck, Player, PlaygroundArea},
     constants::CARD_THICKNESS,
     sequences::DeckSequenceStamp,
 };
 
 pub fn arrange_deck(
     mut cards_query: Query<(&Deck, &DeckSequenceStamp, &mut Anima)>,
-    deck_pile_query: Query<(&DeckPile<Player>, &Transform)>,
+    deck_pile_query: Query<&Transform, (With<PlaygroundArea>, With<Deck>, With<Player>)>,
 ) -> Result {
-    let (_, deck_pile_transform) = deck_pile_query.single()?;
+    let deck_pile_transform = deck_pile_query.single()?;
 
     let mut cards: Vec<_> = cards_query.iter_mut().collect();
 

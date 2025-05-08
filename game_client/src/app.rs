@@ -11,10 +11,17 @@ use bevy::{
 use mock_server::MockServer;
 
 use crate::{
-    battle::BattlePlugin, battle_round::BattleRoundPlugin, card_color::CardColorPlugin,
-    card_location::CardLocationPlugin, card_material::CardMaterialPlugin,
-    card_mesh::CardMeshPlugin, glue::GluePlugin, round::RoundPlugin, sequences::SequencesPlugin,
-    setup::SetupPlugin, turn::TurnPlugin,
+    area::{AreaPlugin, ContestantPlugin, PlaygroundAreaPlugin},
+    battle::BattlePlugin,
+    battle_round::BattleRoundPlugin,
+    card_color::CardColorPlugin,
+    card_material::CardMaterialPlugin,
+    card_mesh::CardMeshPlugin,
+    glue::GluePlugin,
+    round::RoundPlugin,
+    sequences::SequencesPlugin,
+    setup::SetupPlugin,
+    turn::TurnPlugin,
 };
 
 #[cfg(debug_assertions)]
@@ -52,7 +59,9 @@ pub fn run() {
             base: ROSE_800.into(),
             hover: ROSE_600.into(),
         },
-        CardLocationPlugin,
+        ContestantPlugin,
+        AreaPlugin,
+        PlaygroundAreaPlugin,
         CardMaterialPlugin,
         CardMeshPlugin,
     ))

@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::card_location::{Deck, Graveyard, Hand, Played};
+use crate::area::{Deck, Graveyard, Hand, Played};
 
 use super::{
     DeckSequence, DeckSequenceStamp, GraveyardSequence, GraveyardSequenceStamp, HandSequence,

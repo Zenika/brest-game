@@ -2,17 +2,16 @@ use anima::{Anima, WithTRS};
 use bevy::prelude::*;
 
 use crate::{
-    board_locations::{GraveyardPile, Player},
-    card_location::Graveyard,
+    area::{Graveyard, Player, PlaygroundArea},
     constants::CARD_THICKNESS,
     sequences::GraveyardSequenceStamp,
 };
 
 pub fn arrange_graveyard(
     mut cards_query: Query<(&Graveyard, &GraveyardSequenceStamp, &mut Anima)>,
-    graveyard_pile_query: Query<(&GraveyardPile<Player>, &Transform)>,
+    graveyard_pile_query: Query<&Transform, (With<PlaygroundArea>, With<Graveyard>, With<Player>)>,
 ) -> Result {
-    let (_, graveyard_pile_transform) = graveyard_pile_query.single()?;
+    let graveyard_pile_transform = graveyard_pile_query.single()?;
 
     let mut cards: Vec<_> = cards_query.iter_mut().collect();
 

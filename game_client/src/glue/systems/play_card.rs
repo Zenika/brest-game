@@ -2,7 +2,7 @@ use bevy::prelude::*;
 use shared::{CardID, ContestantID, Play, PlayRequest};
 
 use crate::{
-    card_location::{Hand, LocatedCardEvent, Played},
+    area::{Hand, LocatedCardEvent, Played},
     glue::resources::{OpponentID, PlayerID},
     turn::{ContestantPlayed, OpponentPlayed, PlayerPlayed},
 };

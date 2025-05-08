@@ -5,16 +5,16 @@ use entity_event::EntityEvent;
 
 pub type CardEvent<E> = EntityEvent<E>;
 
-use super::CardLocation;
+use super::Area;
 
 #[derive(Event)]
-pub struct LocatedCardEvent<E, Location: CardLocation> {
+pub struct LocatedCardEvent<E, Location: Area> {
     entity: Entity,
     location_marker: PhantomData<Location>,
     event_marker: PhantomData<CardEvent<E>>,
 }
 
-impl<E, Location: CardLocation> LocatedCardEvent<E, Location> {
+impl<E, Location: Area> LocatedCardEvent<E, Location> {
     pub fn entity(&self) -> Entity {
         self.entity
     }
