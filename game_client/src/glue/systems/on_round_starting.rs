@@ -1,16 +1,17 @@
 use crate::{
     area::Deck,
-    glue::events::DrawEvent,
+    glue::messages::DrawMessage,
     round::RoundPhase,
     sequences::SequenceStamp,
     turn::{ContestantPlayed, OpponentPlayed, PlayerPlayed},
 };
 
 use bevy::prelude::*;
+use shared::CardID;
 
 pub fn on_round_starting(
-    mut query: Query<(&SequenceStamp<Deck>, Entity), With<Deck>>,
-    mut draw_events: EventWriter<DrawEvent>,
+    mut query: Query<(&SequenceStamp<Deck>, Entity), (With<Deck>, With<CardID>)>,
+    mut draw_messages: MessageWriter<DrawMessage>,
     mut next_state: ResMut<NextState<RoundPhase>>,
     mut next_player_played: ResMut<NextState<PlayerPlayed>>,
     mut next_opponent_played: ResMut<NextState<OpponentPlayed>>,
@@ -21,7 +22,8 @@ pub fn on_round_starting(
 
     // TODO: replace this magic number by something else
     cards.into_iter().take(3).for_each(|(_, entity)| {
-        draw_events.write(DrawEvent { entity });
+        println!("{}", entity);
+        draw_messages.write(DrawMessage { entity });
     });
 
     next_state.set(RoundPhase::Playing);

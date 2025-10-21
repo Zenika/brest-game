@@ -1,9 +1,9 @@
 use bevy::prelude::*;
-use entity_event::send_entity_event_on;
+use entity_message::send_entity_message_on;
 use shared::CardID;
 
 use crate::{
-    area::{CardEvent, Deck, Player},
+    area::{CardMessage, Deck, Player},
     card_material::{BaseCardMaterial, CardMaterial},
     card_mesh::CardMesh,
     sequences::{Sequence, SequenceStamp},
@@ -36,9 +36,9 @@ impl Command for SpawnCard {
             .spawn(base_bundle)
             .insert(rendering_bundle)
             .insert(deck_seq_stamp)
-            .observe(send_entity_event_on::<Pointer<Over>, CardEvent<Pointer<Over>>>)
-            .observe(send_entity_event_on::<Pointer<Out>, CardEvent<Pointer<Out>>>)
-            .observe(send_entity_event_on::<Pointer<Click>, CardEvent<Pointer<Click>>>);
+            .observe(send_entity_message_on::<Pointer<Over>, CardMessage<Pointer<Over>>>)
+            .observe(send_entity_message_on::<Pointer<Out>, CardMessage<Pointer<Out>>>)
+            .observe(send_entity_message_on::<Pointer<Click>, CardMessage<Pointer<Click>>>);
     }
 }
 

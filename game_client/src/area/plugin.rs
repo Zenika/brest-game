@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 
 use super::{
-    Area, CardEvent, Deck, Graveyard, Hand, LocatedCardEvent, Opponent, Played, Player,
+    Area, CardMessage, Deck, Graveyard, Hand, LocatedCardMessage, Opponent, Played, Player,
     PlaygroundPart,
 };
 
@@ -28,11 +28,11 @@ pub struct PlaygroundAreaPlugin;
 
 impl PlaygroundAreaPlugin {
     fn build_event<E: Event>(app: &mut App) {
-        app.add_event::<CardEvent<E>>()
-            .add_event::<LocatedCardEvent<E, Deck>>()
-            .add_event::<LocatedCardEvent<E, Hand>>()
-            .add_event::<LocatedCardEvent<E, Played>>()
-            .add_event::<LocatedCardEvent<E, Graveyard>>()
+        app.add_message::<CardMessage<E>>()
+            .add_message::<LocatedCardMessage<E, Deck>>()
+            .add_message::<LocatedCardMessage<E, Hand>>()
+            .add_message::<LocatedCardMessage<E, Played>>()
+            .add_message::<LocatedCardMessage<E, Graveyard>>()
             .add_systems(
                 Update,
                 (
@@ -51,17 +51,17 @@ impl Plugin for PlaygroundAreaPlugin {
 
         PlaygroundAreaPlugin::build_event::<Pointer<Out>>(app);
         PlaygroundAreaPlugin::build_event::<Pointer<Over>>(app);
-        PlaygroundAreaPlugin::build_event::<Pointer<Pressed>>(app);
-        PlaygroundAreaPlugin::build_event::<Pointer<Released>>(app);
+        PlaygroundAreaPlugin::build_event::<Pointer<Press>>(app);
+        PlaygroundAreaPlugin::build_event::<Pointer<Release>>(app);
         PlaygroundAreaPlugin::build_event::<Pointer<Click>>(app);
     }
 }
 
 pub fn locate_card_event<E: Event, Location: Area>(
-    mut card_events: EventReader<CardEvent<E>>,
-    mut located_events: EventWriter<LocatedCardEvent<E, Location>>,
+    mut card_messages: MessageReader<CardMessage<E>>,
+    mut located_messages: MessageWriter<LocatedCardMessage<E, Location>>,
 ) {
-    for event in card_events.read() {
-        located_events.write(LocatedCardEvent::new(event.entity()));
+    for message in card_messages.read() {
+        located_messages.write(LocatedCardMessage::new(message.entity()));
     }
 }

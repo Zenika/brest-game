@@ -74,6 +74,7 @@ pub fn setup_board(
     ));
 
     commands.spawn((
+        Name::new("PlaygroundPart - Player Deck"),
         PlaygroundPart,
         Deck,
         Player,
@@ -82,6 +83,7 @@ pub fn setup_board(
     ));
 
     commands.spawn((
+        Name::new("PlaygroundPart - Player Graveyard"),
         PlaygroundPart,
         Graveyard,
         Player,
@@ -90,6 +92,7 @@ pub fn setup_board(
     ));
 
     commands.spawn((
+        Name::new("PlaygroundPart - Player Played"),
         PlaygroundPart,
         Played,
         Player,

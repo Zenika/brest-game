@@ -12,7 +12,7 @@ use crate::{
 };
 
 use super::{
-    events::*,
+    messages::*,
     resources::{OpponentID, PlayerID},
     systems::*,
 };
@@ -42,7 +42,7 @@ impl Plugin for GluePlugin {
 
         app.insert_resource(PlayerID(ContestantID(0)))
             .insert_resource(OpponentID(ContestantID(1)))
-            .add_event::<DrawEvent>()
+            .add_message::<DrawMessage>()
             .add_systems(PostStartup, enable_anima::<With<Mesh3d>>)
             .add_systems(
                 Update,
@@ -80,8 +80,8 @@ impl Plugin for GluePlugin {
                     arrange_fan::<Opponent, Hand>,
                     arrange_pile::<Opponent, Played>,
                     arrange_pile::<Opponent, Graveyard>,
-                    handle_draw_event,
-                    handle_play.run_if(on_event::<Play>),
+                    handle_draw_message,
+                    handle_play.run_if(on_message::<Play>),
                     make_exclusive::<Deck, Hand>,
                     make_exclusive::<Deck, Played>,
                     make_exclusive::<Deck, Graveyard>,

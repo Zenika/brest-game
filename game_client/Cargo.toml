@@ -3,7 +3,7 @@ members = ["pkg/framework/*", "pkg/shared", "pkg/mock_server"]
 
 resolver = "2"
 [workspace.dependencies]
-bevy = { version = "0.16.0", features = ["bevy_dev_tools"] }
+bevy = { version = "0.17", features = ["bevy_dev_tools"] }
 shared = { path = "./pkg/shared" }
 
 [package]
@@ -16,13 +16,13 @@ bevy = { workspace = true }
 shared = { workspace = true }
 
 anima = { path = "./pkg/framework/anima" }
-entity_event = { path = "./pkg/framework/entity_event" }
+entity_message = { path = "./pkg/framework/entity_message" }
 states_timer = { path = "./pkg/framework/states_timer" }
 
 mock_server = { path = "./pkg/mock_server" }
 
-bevy_dylib = "0.16.0"
-bevy-inspector-egui = "0.31.0"
+bevy_dylib = "0.17"
+bevy-inspector-egui = "0.34"
 log = { version = "*", features = [
     "max_level_debug",
     "release_max_level_warn",

@@ -1,7 +1,7 @@
 mod components;
-mod events;
+mod messages;
 mod plugin;
 
 pub use components::*;
-pub use events::*;
+pub use messages::*;
 pub use plugin::*;

@@ -6,7 +6,7 @@ use anima::AnimaPlugin;
 use bevy::{
     color::palettes::tailwind::{GRAY_50, ROSE_600, ROSE_800, TEAL_50},
     prelude::*,
-    window::PresentMode,
+    window::{PresentMode, WindowResolution},
 };
 use mock_server::MockServer;
 
@@ -33,7 +33,7 @@ pub fn run() {
     // Base plugins (some are required by DebugPlugin)
     app.add_plugins(DefaultPlugins.set(WindowPlugin {
         primary_window: Some(Window {
-            resolution: (1600., 900.).into(),
+            resolution: WindowResolution::new(1600, 900),
             present_mode: PresentMode::AutoNoVsync,
             ..default()
         }),
