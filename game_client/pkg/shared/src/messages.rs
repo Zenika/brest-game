@@ -1,9 +1,9 @@
-use bevy::ecs::event::Event;
+use bevy::ecs::message::Message;
 
 use crate::{CardID, ContestantID};
 
-#[derive(Event, Debug)]
+#[derive(Message, Debug)]
 pub struct PlayRequest(pub ContestantID, pub CardID);
 
-#[derive(Event, Debug)]
+#[derive(Message, Debug)]
 pub struct Play(pub ContestantID, pub CardID);

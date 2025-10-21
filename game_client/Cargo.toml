@@ -1,10 +1,10 @@
 [workspace]
-resolver = "2"
-members = ["crates/*", "framework/*"]
+members = ["pkg/framework/*", "pkg/shared", "pkg/mock_server"]
 
+resolver = "2"
 [workspace.dependencies]
-bevy = { version = "0.15.3", features = ["bevy_dev_tools"] }
-shared = { path = "./crates/shared" }
+bevy = { version = "0.17", features = ["bevy_dev_tools"] }
+shared = { path = "./pkg/shared" }
 
 [package]
 name = "game_client"
@@ -15,14 +15,14 @@ edition = "2024"
 bevy = { workspace = true }
 shared = { workspace = true }
 
-anima = { path = "./framework/anima" }
-entity_event = { path = "./framework/entity_event" }
-states_timer = { path = "./framework/states_timer" }
+anima = { path = "./pkg/framework/anima" }
+entity_message = { path = "./pkg/framework/entity_message" }
+states_timer = { path = "./pkg/framework/states_timer" }
 
-mock_server = { path = "./crates/mock_server" }
+mock_server = { path = "./pkg/mock_server" }
 
-bevy_dylib = "0.15.3"
-bevy-inspector-egui = "0.30.0"
+bevy_dylib = "0.17"
+bevy-inspector-egui = "0.34"
 log = { version = "*", features = [
     "max_level_debug",
     "release_max_level_warn",
