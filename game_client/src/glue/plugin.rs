@@ -4,7 +4,7 @@ use shared::{ContestantID, Play};
 use states_timer::set_on_timer;
 
 use crate::{
-    area::{Deck, Graveyard, Hand, Played},
+    area::{Deck, Graveyard, Hand, Opponent, Played, Player},
     battle::BattlePhase,
     card_material::{BaseCardMaterial, HoverCardMaterial, apply_material_on},
     round::RoundPhase,
@@ -72,10 +72,14 @@ impl Plugin for GluePlugin {
                     apply_material_on::<BaseCardMaterial, Pointer<Out>, Hand>,
                     apply_material_on::<BaseCardMaterial, Pointer<Out>, Played>,
                     apply_material_on::<BaseCardMaterial, Pointer<Out>, Graveyard>,
-                    arrange_board,
-                    arrange_deck,
-                    arrange_hand,
-                    arrange_graveyard,
+                    arrange_pile::<Player, Deck>,
+                    arrange_fan::<Player, Hand>,
+                    arrange_pile::<Player, Played>,
+                    arrange_pile::<Player, Graveyard>,
+                    arrange_pile::<Opponent, Deck>,
+                    arrange_fan::<Opponent, Hand>,
+                    arrange_pile::<Opponent, Played>,
+                    arrange_pile::<Opponent, Graveyard>,
                     handle_draw_event,
                     handle_play.run_if(on_event::<Play>),
                     make_exclusive::<Deck, Hand>,

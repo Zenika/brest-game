@@ -1,15 +1,11 @@
 use anima::{Anima, WithTRS};
 use bevy::prelude::*;
 
-use crate::{
-    area::{Graveyard, Player, PlaygroundPart},
-    constants::CARD_THICKNESS,
-    sequences::GraveyardSequenceStamp,
-};
+use crate::{area::PlaygroundPart, constants::CARD_THICKNESS, sequences::SequenceStamp};
 
-pub fn arrange_graveyard(
-    mut cards_query: Query<(&GraveyardSequenceStamp, &mut Anima), With<Graveyard>>,
-    graveyard_pile_query: Single<&Transform, (With<PlaygroundPart>, With<Graveyard>, With<Player>)>,
+pub fn arrange_pile<C: Component, A: Component>(
+    mut cards_query: Query<(&SequenceStamp<A>, &mut Anima), (With<C>, With<A>)>,
+    playground_part_query: Single<&Transform, (With<PlaygroundPart>, With<C>, With<A>)>,
 ) {
     let mut cards: Vec<_> = cards_query.iter_mut().collect();
 
@@ -20,15 +16,16 @@ pub fn arrange_graveyard(
         .enumerate()
         .for_each(|(index, (_, mut anima))| {
             let target_translation = Vec3::new(
-                graveyard_pile_query.translation.x,
-                graveyard_pile_query.translation.y,
+                playground_part_query.translation.x,
+                playground_part_query.translation.y,
                 CARD_THICKNESS * (index + 1) as f32,
             );
 
+            // TODO: test Anima / Parenting compat
             anima.set_if_neq(
                 anima
                     .with_translation((target_translation, None, None))
-                    .with_rotation((graveyard_pile_query.rotation, None, None)),
+                    .with_rotation((playground_part_query.rotation, None, None)),
             );
         });
 }

@@ -1,17 +1,20 @@
+use std::marker::PhantomData;
+
 use bevy::prelude::*;
 
-#[derive(Component, Reflect, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Component, Reflect, PartialEq, Eq, PartialOrd, Ord, Deref)]
 #[reflect(Component)]
-pub struct DeckSequenceStamp(pub u8);
+pub struct SequenceStamp<T> {
+    #[deref]
+    value: u8,
+    marker: PhantomData<T>,
+}
 
-#[derive(Component, Reflect, PartialEq, Eq, PartialOrd, Ord)]
-#[reflect(Component)]
-pub struct HandSequenceStamp(pub u8);
-
-#[derive(Component, Reflect, PartialEq, Eq, PartialOrd, Ord)]
-#[reflect(Component)]
-pub struct PlayedSequenceStamp(pub u8);
-
-#[derive(Component, Reflect, PartialEq, Eq, PartialOrd, Ord)]
-#[reflect(Component)]
-pub struct GraveyardSequenceStamp(pub u8);
+impl<T: Send + Sync> From<u8> for SequenceStamp<T> {
+    fn from(value: u8) -> Self {
+        Self {
+            value,
+            marker: PhantomData::<T>,
+        }
+    }
+}

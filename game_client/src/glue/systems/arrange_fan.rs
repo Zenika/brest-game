@@ -2,12 +2,13 @@ use anima::{Anima, WithTRS};
 use bevy::prelude::*;
 
 use crate::{
-    area::Hand,
     constants::{CARD_SIZE, GAP, HAND_CARD_ROTATION, HAND_CARD_Y, HAND_CARD_Z},
-    sequences::HandSequenceStamp,
+    sequences::SequenceStamp,
 };
 
-pub fn arrange_hand(mut query: Query<(&HandSequenceStamp, &mut Anima), With<Hand>>) {
+pub fn arrange_fan<C: Component, A: Component>(
+    mut query: Query<(&SequenceStamp<A>, &mut Anima), (With<C>, With<A>)>,
+) {
     let target_rotation = *HAND_CARD_ROTATION;
     let x_step = CARD_SIZE.x + GAP;
 

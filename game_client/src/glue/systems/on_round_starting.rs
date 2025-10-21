@@ -2,14 +2,14 @@ use crate::{
     area::Deck,
     glue::events::DrawEvent,
     round::RoundPhase,
-    sequences::DeckSequenceStamp,
+    sequences::SequenceStamp,
     turn::{ContestantPlayed, OpponentPlayed, PlayerPlayed},
 };
 
 use bevy::prelude::*;
 
 pub fn on_round_starting(
-    mut query: Query<(&DeckSequenceStamp, Entity), With<Deck>>,
+    mut query: Query<(&SequenceStamp<Deck>, Entity), With<Deck>>,
     mut draw_events: EventWriter<DrawEvent>,
     mut next_state: ResMut<NextState<RoundPhase>>,
     mut next_player_played: ResMut<NextState<PlayerPlayed>>,
