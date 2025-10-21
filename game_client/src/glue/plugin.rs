@@ -4,15 +4,15 @@ use shared::{ContestantID, Play};
 use states_timer::set_on_timer;
 
 use crate::{
+    area::{Deck, Graveyard, Hand, Opponent, Played, Player},
     battle::BattlePhase,
-    card_location::{Deck, Graveyard, Hand, Played},
     card_material::{BaseCardMaterial, HoverCardMaterial, apply_material_on},
     round::RoundPhase,
     turn::{ContestantPlayed, OpponentPlayed, PlayerPlayed},
 };
 
 use super::{
-    events::*,
+    messages::*,
     resources::{OpponentID, PlayerID},
     systems::*,
 };
@@ -42,7 +42,7 @@ impl Plugin for GluePlugin {
 
         app.insert_resource(PlayerID(ContestantID(0)))
             .insert_resource(OpponentID(ContestantID(1)))
-            .add_event::<DrawEvent>()
+            .add_message::<DrawMessage>()
             .add_systems(PostStartup, enable_anima::<With<Mesh3d>>)
             .add_systems(
                 Update,
@@ -72,12 +72,22 @@ impl Plugin for GluePlugin {
                     apply_material_on::<BaseCardMaterial, Pointer<Out>, Hand>,
                     apply_material_on::<BaseCardMaterial, Pointer<Out>, Played>,
                     apply_material_on::<BaseCardMaterial, Pointer<Out>, Graveyard>,
-                    arrange_board,
-                    arrange_deck,
-                    arrange_hand,
-                    arrange_graveyard,
-                    handle_draw_event,
-                    handle_play.run_if(on_event::<Play>),
+                    arrange_pile::<Player, Deck>,
+                    arrange_fan::<Player, Hand>,
+                    arrange_pile::<Player, Played>,
+                    arrange_pile::<Player, Graveyard>,
+                    arrange_pile::<Opponent, Deck>,
+                    arrange_fan::<Opponent, Hand>,
+                    arrange_pile::<Opponent, Played>,
+                    arrange_pile::<Opponent, Graveyard>,
+                    handle_draw_message,
+                    handle_play.run_if(on_message::<Play>),
+                    make_exclusive::<Deck, Hand>,
+                    make_exclusive::<Deck, Played>,
+                    make_exclusive::<Deck, Graveyard>,
+                    make_exclusive::<Hand, Played>,
+                    make_exclusive::<Hand, Graveyard>,
+                    make_exclusive::<Played, Graveyard>,
                 ),
             )
             // Components

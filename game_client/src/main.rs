@@ -1,9 +1,8 @@
 mod app;
+mod area;
 mod battle;
 mod battle_round;
-mod board_locations;
 mod card_color;
-mod card_location;
 mod card_material;
 mod card_mesh;
 mod constants;

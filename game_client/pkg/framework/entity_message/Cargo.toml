@@ -1,5 +1,5 @@
 [package]
-name = "entity_event"
+name = "entity_message"
 version = "0.1.0"
 edition = "2024"
 

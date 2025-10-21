@@ -6,15 +6,22 @@ use anima::AnimaPlugin;
 use bevy::{
     color::palettes::tailwind::{GRAY_50, ROSE_600, ROSE_800, TEAL_50},
     prelude::*,
-    window::PresentMode,
+    window::{PresentMode, WindowResolution},
 };
 use mock_server::MockServer;
 
 use crate::{
-    battle::BattlePlugin, battle_round::BattleRoundPlugin, card_color::CardColorPlugin,
-    card_location::CardLocationPlugin, card_material::CardMaterialPlugin,
-    card_mesh::CardMeshPlugin, glue::GluePlugin, round::RoundPlugin, sequences::SequencesPlugin,
-    setup::SetupPlugin, turn::TurnPlugin,
+    area::{AreaPlugin, ContestantPlugin, PlaygroundAreaPlugin},
+    battle::BattlePlugin,
+    battle_round::BattleRoundPlugin,
+    card_color::CardColorPlugin,
+    card_material::CardMaterialPlugin,
+    card_mesh::CardMeshPlugin,
+    glue::GluePlugin,
+    round::RoundPlugin,
+    sequences::SequencesPlugin,
+    setup::SetupPlugin,
+    turn::TurnPlugin,
 };
 
 #[cfg(debug_assertions)]
@@ -23,19 +30,24 @@ use crate::debug::DebugPlugin;
 pub fn run() {
     let mut app = App::new();
 
-    app.add_plugins((
-        DefaultPlugins.set(WindowPlugin {
-            primary_window: Some(Window {
-                resolution: (1600., 900.).into(),
-                present_mode: PresentMode::AutoNoVsync,
-                ..default()
-            }),
+    // Base plugins (some are required by DebugPlugin)
+    app.add_plugins(DefaultPlugins.set(WindowPlugin {
+        primary_window: Some(Window {
+            resolution: WindowResolution::new(1600, 900),
+            present_mode: PresentMode::AutoNoVsync,
             ..default()
         }),
-        AnimaPlugin,
-        MeshPickingPlugin,
-    ))
-    .add_plugins(SetupPlugin {
+        ..default()
+    }));
+
+    #[cfg(debug_assertions)]
+    app.add_plugins(DebugPlugin);
+
+    // Support plugins
+    app.add_plugins((AnimaPlugin, MeshPickingPlugin));
+
+    // Game plugins
+    app.add_plugins(SetupPlugin {
         key_light_illuminance: light_consts::lux::OVERCAST_DAY,
         key_light_shadows_enabled: true,
         fill_light_intensity: 100.,
@@ -47,7 +59,9 @@ pub fn run() {
             base: ROSE_800.into(),
             hover: ROSE_600.into(),
         },
-        CardLocationPlugin,
+        ContestantPlugin,
+        AreaPlugin,
+        PlaygroundAreaPlugin,
         CardMaterialPlugin,
         CardMeshPlugin,
     ))
@@ -58,9 +72,6 @@ pub fn run() {
     .add_plugins(TurnPlugin)
     .add_plugins(GluePlugin)
     .add_plugins(MockServer);
-
-    #[cfg(debug_assertions)]
-    app.add_plugins(DebugPlugin);
 
     app.run();
 }
