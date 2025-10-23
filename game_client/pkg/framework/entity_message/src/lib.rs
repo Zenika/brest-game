@@ -7,10 +7,10 @@ use bevy::ecs::{
     observer::On,
 };
 
-#[derive(Message)]
+#[derive(Message, Clone, Copy)]
 pub struct EntityMessage<M> {
     entity: Entity,
-    message_marker: PhantomData<M>,
+    marker: PhantomData<M>,
 }
 
 impl<M> ContainsEntity for EntityMessage<M> {
@@ -23,14 +23,14 @@ impl<M> From<Entity> for EntityMessage<M> {
     fn from(value: Entity) -> Self {
         Self {
             entity: value,
-            message_marker: PhantomData::<M>,
+            marker: PhantomData::<M>,
         }
     }
 }
 
-pub fn send_entity_message_on<EE: EntityEvent, EM: Message + From<Entity>>(
+pub fn relay_as_entity_message<EE: EntityEvent>(
     trigger: On<EE>,
-    mut message: MessageWriter<EM>,
+    mut message: MessageWriter<EntityMessage<EE>>,
 ) {
     message.write(trigger.event().event_target().into());
 }
