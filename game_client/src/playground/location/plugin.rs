@@ -1,9 +1,8 @@
 use bevy::prelude::*;
 use entity_message::EntityMessage;
 
-use crate::playground::locate_card_entity_message;
-
 use super::{Deck, Field, Graveyard, Hand, LocatedEntityMessage};
+use crate::playground::locate_card_entity_message;
 
 pub struct PlaygroundLocationPlugin;
 

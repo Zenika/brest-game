@@ -19,23 +19,13 @@ pub struct Easings {
 }
 
 impl From<(TranslationEasing, RotationEasing, ScaleEasing)> for Easings {
-    fn from(
-        (translation, rotation, scale): (TranslationEasing, RotationEasing, ScaleEasing),
-    ) -> Self {
-        Self {
-            translation,
-            rotation,
-            scale,
-        }
+    fn from((translation, rotation, scale): (TranslationEasing, RotationEasing, ScaleEasing)) -> Self {
+        Self { translation, rotation, scale }
     }
 }
 
 impl Default for Easings {
     fn default() -> Self {
-        Self {
-            translation: TranslationEasing::Linear,
-            rotation: RotationEasing::Linear,
-            scale: ScaleEasing::Linear,
-        }
+        Self { translation: TranslationEasing::Linear, rotation: RotationEasing::Linear, scale: ScaleEasing::Linear }
     }
 }

@@ -1,9 +1,7 @@
 use std::marker::PhantomData;
 
-use bevy::ecs::{
-    entity::{ContainsEntity, Entity},
-    message::Message,
-};
+use bevy::ecs::entity::{ContainsEntity, Entity};
+use bevy::ecs::message::Message;
 use entity_message::EntityMessage;
 
 use super::PlaygroundLocation;
@@ -22,9 +20,6 @@ impl<M, Location: PlaygroundLocation> ContainsEntity for LocatedEntityMessage<M,
 
 impl<M, Location: PlaygroundLocation> LocatedEntityMessage<M, Location> {
     pub fn new(entity_message: EntityMessage<M>) -> Self {
-        Self {
-            entity_message,
-            location: PhantomData::<Location>,
-        }
+        Self { entity_message, location: PhantomData::<Location> }
     }
 }

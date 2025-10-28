@@ -1,4 +1,5 @@
-use bevy::ecs::{entity::Entity, message::Message};
+use bevy::ecs::entity::Entity;
+use bevy::ecs::message::Message;
 
 #[derive(Message)]
 pub struct DrawMessage {

@@ -12,9 +12,6 @@ pub struct SequenceStamp<T> {
 
 impl<T: Send + Sync> From<u8> for SequenceStamp<T> {
     fn from(value: u8) -> Self {
-        Self {
-            value,
-            marker: PhantomData::<T>,
-        }
+        Self { value, marker: PhantomData::<T> }
     }
 }

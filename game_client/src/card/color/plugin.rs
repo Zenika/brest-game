@@ -9,7 +9,6 @@ pub struct CardColorPlugin {
 
 impl Plugin for CardColorPlugin {
     fn build(&self, app: &mut App) {
-        app.insert_resource(BaseCardColor(self.base))
-            .insert_resource(HoverCardColor(self.hover));
+        app.insert_resource(BaseCardColor(self.base)).insert_resource(HoverCardColor(self.hover));
     }
 }

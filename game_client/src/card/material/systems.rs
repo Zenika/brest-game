@@ -1,8 +1,7 @@
 use bevy::prelude::*;
 
-use crate::playground::{LocatedEntityMessage, PlaygroundLocation};
-
 use super::resources::CardMaterial;
+use crate::playground::{LocatedEntityMessage, PlaygroundLocation};
 
 pub type Reader<'w, 's, E, L> = MessageReader<'w, 's, LocatedEntityMessage<E, L>>;
 

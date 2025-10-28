@@ -8,15 +8,11 @@ pub struct PartialDurations {
     pub scale: Option<Duration>,
 }
 
-impl<T: Into<Option<Duration>>, R: Into<Option<Duration>>, S: Into<Option<Duration>>>
-    From<(T, R, S)> for PartialDurations
+impl<T: Into<Option<Duration>>, R: Into<Option<Duration>>, S: Into<Option<Duration>>> From<(T, R, S)>
+    for PartialDurations
 {
     fn from((translation, rotation, scale): (T, R, S)) -> Self {
-        Self {
-            translation: translation.into(),
-            rotation: rotation.into(),
-            scale: scale.into(),
-        }
+        Self { translation: translation.into(), rotation: rotation.into(), scale: scale.into() }
     }
 }
 

@@ -8,9 +8,6 @@ pub struct StatesTimer<S: States>(#[deref] Timer, #[reflect(ignore)] PhantomData
 
 impl<S: States> StatesTimer<S> {
     pub fn new(duration_in_seconds: f32) -> Self {
-        Self(
-            Timer::from_seconds(duration_in_seconds, TimerMode::Once),
-            PhantomData::<S>,
-        )
+        Self(Timer::from_seconds(duration_in_seconds, TimerMode::Once), PhantomData::<S>)
     }
 }

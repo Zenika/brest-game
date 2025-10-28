@@ -1,6 +1,5 @@
-use crate::{GetTRS, GetTRSMut};
-
 use super::{Easings, RotationEasing, ScaleEasing, TranslationEasing};
+use crate::{GetTRS, GetTRSMut};
 
 impl GetTRS<TranslationEasing, RotationEasing, ScaleEasing> for Easings {
     fn get_translation(&self) -> &TranslationEasing {

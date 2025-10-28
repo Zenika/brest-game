@@ -1,23 +1,14 @@
-use bevy::{
-    ecs::{
-        schedule::{IntoScheduleConfigs, ScheduleConfigs, common_conditions::on_message},
-        system::{Res, ResMut, System},
-    },
-    state::{
-        condition::in_state,
-        state::{
-            FreelyMutableState, NextState, StateTransitionEvent as StateTransitionMessage, States,
-        },
-    },
-    time::Time,
-};
+use bevy::ecs::schedule::common_conditions::on_message;
+use bevy::ecs::schedule::{IntoScheduleConfigs, ScheduleConfigs};
+use bevy::ecs::system::{Res, ResMut, System};
+use bevy::state::condition::in_state;
+use bevy::state::state::{FreelyMutableState, NextState, StateTransitionEvent as StateTransitionMessage, States};
+use bevy::time::Time;
 
 use super::StatesTimer;
 
-pub fn reset_timer_on_transition<S: States>()
--> ScheduleConfigs<Box<dyn System<In = (), Out = ()> + 'static>> {
-    (|mut timer: ResMut<StatesTimer<S>>| timer.reset())
-        .run_if(on_message::<StateTransitionMessage<S>>)
+pub fn reset_timer_on_transition<S: States>() -> ScheduleConfigs<Box<dyn System<In = (), Out = ()> + 'static>> {
+    (|mut timer: ResMut<StatesTimer<S>>| timer.reset()).run_if(on_message::<StateTransitionMessage<S>>)
 }
 
 // Alias to shorten the closure header (hard to read when 3 lines long)

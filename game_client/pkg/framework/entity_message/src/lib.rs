@@ -1,11 +1,9 @@
 use std::marker::PhantomData;
 
-use bevy::ecs::{
-    entity::{ContainsEntity, Entity},
-    event::EntityEvent,
-    message::{Message, MessageWriter},
-    observer::On,
-};
+use bevy::ecs::entity::{ContainsEntity, Entity};
+use bevy::ecs::event::EntityEvent;
+use bevy::ecs::message::{Message, MessageWriter};
+use bevy::ecs::observer::On;
 
 #[derive(Message, Clone, Copy)]
 pub struct EntityMessage<M> {
@@ -21,16 +19,10 @@ impl<M> ContainsEntity for EntityMessage<M> {
 
 impl<M> From<Entity> for EntityMessage<M> {
     fn from(value: Entity) -> Self {
-        Self {
-            entity: value,
-            marker: PhantomData::<M>,
-        }
+        Self { entity: value, marker: PhantomData::<M> }
     }
 }
 
-pub fn relay_as_entity_message<EE: EntityEvent>(
-    trigger: On<EE>,
-    mut message: MessageWriter<EntityMessage<EE>>,
-) {
+pub fn relay_as_entity_message<EE: EntityEvent>(trigger: On<EE>, mut message: MessageWriter<EntityMessage<EE>>) {
     message.write(trigger.event().event_target().into());
 }

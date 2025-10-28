@@ -1,5 +1,4 @@
 use bevy::math::{Quat, Vec3};
-
 pub use bevy::prelude::Transform;
 
 mod partial;

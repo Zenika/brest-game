@@ -2,11 +2,9 @@ use bevy::prelude::*;
 use entity_message::relay_as_entity_message;
 use shared::CardID;
 
-use crate::{
-    flow::Player,
-    card::{BaseCardMaterial, CardMaterial, CardMesh},
-    playground::{Deck, Sequence, SequenceStamp},
-};
+use crate::card::{BaseCardMaterial, CardMaterial, CardMesh};
+use crate::flow::Player;
+use crate::playground::{Deck, Sequence, SequenceStamp};
 
 pub struct SpawnCard {
     pub index: u8,

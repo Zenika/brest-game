@@ -1,8 +1,7 @@
 use bevy::prelude::*;
 
-use crate::card::CardSize;
-
 use super::CardMesh;
+use crate::card::CardSize;
 
 pub struct CardMeshPlugin {
     pub card_size: Vec3,
@@ -10,7 +9,6 @@ pub struct CardMeshPlugin {
 
 impl Plugin for CardMeshPlugin {
     fn build(&self, app: &mut App) {
-        app.insert_resource(CardSize(self.card_size))
-            .init_resource::<CardMesh>();
+        app.insert_resource(CardSize(self.card_size)).init_resource::<CardMesh>();
     }
 }

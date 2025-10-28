@@ -4,8 +4,7 @@ mod debug;
 mod glue;
 mod setup;
 
+pub use app::*;
 use debug::*;
 use glue::*;
 use setup::*;
-
-pub use app::*;

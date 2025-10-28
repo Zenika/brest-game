@@ -19,23 +19,13 @@ pub struct Durations {
 }
 
 impl From<(TranslationDuration, RotationDuration, ScaleDuration)> for Durations {
-    fn from(
-        (transform, rotation, scale): (TranslationDuration, RotationDuration, ScaleDuration),
-    ) -> Self {
-        Self {
-            translation: transform,
-            rotation,
-            scale,
-        }
+    fn from((transform, rotation, scale): (TranslationDuration, RotationDuration, ScaleDuration)) -> Self {
+        Self { translation: transform, rotation, scale }
     }
 }
 
 impl Default for Durations {
     fn default() -> Self {
-        Self {
-            translation: 1.,
-            rotation: 1.,
-            scale: 1.,
-        }
+        Self { translation: 1., rotation: 1., scale: 1. }
     }
 }

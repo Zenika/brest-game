@@ -1,6 +1,5 @@
-use crate::{Duration, Easing, Rotation, Scale, SetTRS, Translation, TranslationOrScale};
-
 use super::Anima;
+use crate::{Duration, Easing, Rotation, Scale, SetTRS, Translation, TranslationOrScale};
 
 pub struct Partial<TRS>(Option<TRS>, Option<Easing>, Option<Duration>);
 
@@ -60,8 +59,8 @@ impl SetTRS<Partial<Translation>, Partial<Rotation>, Partial<Scale>> for Anima {
     }
 }
 
-impl<TS: Into<Option<TranslationOrScale>>, E: Into<Option<Easing>>, D: Into<Option<Duration>>>
-    From<(TS, E, D)> for Partial<Translation>
+impl<TS: Into<Option<TranslationOrScale>>, E: Into<Option<Easing>>, D: Into<Option<Duration>>> From<(TS, E, D)>
+    for Partial<Translation>
 {
     fn from((rotation, easing, duration): (TS, E, D)) -> Self {
         Self(rotation.into(), easing.into(), duration.into())

@@ -1,6 +1,5 @@
-use crate::{GetTRS, GetTRSMut};
-
 use super::{Durations, RotationDuration, ScaleDuration, TranslationDuration};
+use crate::{GetTRS, GetTRSMut};
 
 impl GetTRS<TranslationDuration, RotationDuration, ScaleDuration> for Durations {
     fn get_translation(&self) -> &TranslationDuration {

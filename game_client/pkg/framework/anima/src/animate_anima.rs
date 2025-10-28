@@ -1,4 +1,5 @@
-use bevy::{animation::animated_field, prelude::*};
+use bevy::animation::animated_field;
+use bevy::prelude::*;
 
 use super::{Anima, GetTED, GetTRS};
 
@@ -20,9 +21,7 @@ pub fn animate_anima(
                     *anima.get_transform().get_translation(),
                     *anima.get_easings().get_translation(),
                 )
-                .reparametrize_linear(
-                    interval(0., *anima.get_durations().get_translation()).unwrap(),
-                )
+                .reparametrize_linear(interval(0., *anima.get_durations().get_translation()).unwrap())
                 .unwrap(),
             ),
         );

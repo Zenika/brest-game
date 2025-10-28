@@ -1,7 +1,5 @@
-use bevy::ecs::{
-    event::Event,
-    message::{MessageReader, MessageWriter},
-};
+use bevy::ecs::event::Event;
+use bevy::ecs::message::{MessageReader, MessageWriter};
 use entity_message::EntityMessage;
 
 use crate::playground::{LocatedEntityMessage, PlaygroundLocation};

@@ -1,9 +1,8 @@
-use crate::{
-    Durations, Easings, GetTED, GetTEDMut, GetTRS, PartialDurations, PartialEasings,
-    PartialTransform, SetTED, SetTRS, Transform,
-};
-
 use super::Anima;
+use crate::{
+    Durations, Easings, GetTED, GetTEDMut, GetTRS, PartialDurations, PartialEasings, PartialTransform, SetTED, SetTRS,
+    Transform,
+};
 
 impl GetTED<Transform, Easings, Durations> for Anima {
     fn get_transform(&self) -> &Transform {

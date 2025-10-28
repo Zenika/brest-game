@@ -8,8 +8,6 @@ pub fn increment_sequence<T: Component>(
     query: Query<Entity, Added<T>>,
 ) {
     for entity in &query {
-        commands
-            .entity(entity)
-            .insert(SequenceStamp::<T>::from(sequence.next()));
+        commands.entity(entity).insert(SequenceStamp::<T>::from(sequence.next()));
     }
 }

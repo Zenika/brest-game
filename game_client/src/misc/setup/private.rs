@@ -1,17 +1,13 @@
 use bevy::ecs::system::Commands;
 
-use crate::{
-    flow::Player,
-    misc::constants::{
-        BOARD_SIDE_LENGTH, CAMERA_POSITION, CAMERA_TARGET, CAMERA_UP, CARDS_COUNT,
-        PLAYER_DECK_PILE_ROTATION, PLAYER_DECK_PILE_X, PLAYER_DECK_PILE_Y,
-        PLAYER_GRAVEYARD_PILE_ROTATION, PLAYER_GRAVEYARD_PILE_X, PLAYER_GRAVEYARD_PILE_Y,
-        PLAYER_PLAYED_PILE_ROTATION, PLAYER_PLAYED_PILE_X, PLAYER_PLAYED_PILE_Y,
-    },
-    playground::{Deck, Field, Graveyard, PlaygroundLocationTag},
-};
-
 use super::{BoardColor, SpawnCardExt};
+use crate::flow::Player;
+use crate::misc::constants::{
+    BOARD_SIDE_LENGTH, CAMERA_POSITION, CAMERA_TARGET, CAMERA_UP, CARDS_COUNT, PLAYER_DECK_PILE_ROTATION,
+    PLAYER_DECK_PILE_X, PLAYER_DECK_PILE_Y, PLAYER_GRAVEYARD_PILE_ROTATION, PLAYER_GRAVEYARD_PILE_X,
+    PLAYER_GRAVEYARD_PILE_Y, PLAYER_PLAYED_PILE_ROTATION, PLAYER_PLAYED_PILE_X, PLAYER_PLAYED_PILE_Y,
+};
+use crate::playground::{Deck, Field, Graveyard, PlaygroundLocationTag};
 
 pub fn setup_cards(mut commands: Commands) {
     for index in 0..CARDS_COUNT {
@@ -21,7 +17,9 @@ pub fn setup_cards(mut commands: Commands) {
 
 use std::ops::Deref;
 
-use bevy::{core_pipeline::tonemapping::Tonemapping, ecs::system::SystemParam, prelude::*};
+use bevy::core_pipeline::tonemapping::Tonemapping;
+use bevy::ecs::system::SystemParam;
+use bevy::prelude::*;
 
 pub fn setup_camera(mut commands: Commands) {
     commands.spawn((
@@ -35,14 +33,7 @@ pub fn setup_camera(mut commands: Commands) {
 // Parameterized system without SystemParam, RETURNS the desired system
 pub fn setup_key_light(illuminance: f32, shadows_enabled: bool) -> impl Fn(Commands<'_, '_>) {
     move |mut commands: Commands| {
-        commands.spawn((
-            Name::new("Key light"),
-            DirectionalLight {
-                illuminance,
-                shadows_enabled,
-                ..default()
-            },
-        ));
+        commands.spawn((Name::new("Key light"), DirectionalLight { illuminance, shadows_enabled, ..default() }));
     }
 }
 
@@ -68,10 +59,7 @@ pub fn setup_board(
     commands.spawn((
         Name::new("Playground"),
         Mesh3d(meshes.add(Rectangle::from_length(BOARD_SIDE_LENGTH))),
-        MeshMaterial3d(materials.add(StandardMaterial {
-            base_color: *board_color_param,
-            ..default()
-        })),
+        MeshMaterial3d(materials.add(StandardMaterial { base_color: *board_color_param, ..default() })),
     ));
 
     commands.spawn((
@@ -79,8 +67,7 @@ pub fn setup_board(
         PlaygroundLocationTag,
         Deck,
         Player,
-        Transform::from_xyz(PLAYER_DECK_PILE_X, PLAYER_DECK_PILE_Y, 0.)
-            .with_rotation(*PLAYER_DECK_PILE_ROTATION),
+        Transform::from_xyz(PLAYER_DECK_PILE_X, PLAYER_DECK_PILE_Y, 0.).with_rotation(*PLAYER_DECK_PILE_ROTATION),
     ));
 
     commands.spawn((
@@ -97,7 +84,6 @@ pub fn setup_board(
         PlaygroundLocationTag,
         Field,
         Player,
-        Transform::from_xyz(PLAYER_PLAYED_PILE_X, PLAYER_PLAYED_PILE_Y, 0.)
-            .with_rotation(*PLAYER_PLAYED_PILE_ROTATION),
+        Transform::from_xyz(PLAYER_PLAYED_PILE_X, PLAYER_PLAYED_PILE_Y, 0.).with_rotation(*PLAYER_PLAYED_PILE_ROTATION),
     ));
 }

@@ -1,5 +1,4 @@
 use bevy::prelude::*;
-
 #[cfg(debug_assertions)]
 use bevy_inspector_egui::quick::StateInspectorPlugin;
 

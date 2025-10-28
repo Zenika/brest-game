@@ -20,9 +20,6 @@ impl<T: Send + Sync> Sequence<T> {
 
 impl<T: Send + Sync> FromWorld for Sequence<T> {
     fn from_world(_: &mut World) -> Self {
-        Self {
-            value: 0,
-            marker: PhantomData::<T>,
-        }
+        Self { value: 0, marker: PhantomData::<T> }
     }
 }

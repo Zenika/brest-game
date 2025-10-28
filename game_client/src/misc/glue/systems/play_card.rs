@@ -1,11 +1,9 @@
 use bevy::prelude::*;
 use shared::{CardID, ContestantID, Play, PlayRequest};
 
-use crate::{
-    flow::{ContestantPlayed, OpponentPlayed, PlayerPlayed},
-    misc::glue::resources::{OpponentID, PlayerID},
-    playground::{Field, Hand, LocatedEntityMessage},
-};
+use crate::flow::{ContestantPlayed, OpponentPlayed, PlayerPlayed};
+use crate::misc::glue::resources::{OpponentID, PlayerID};
+use crate::playground::{Field, Hand, LocatedEntityMessage};
 
 pub fn request_player_play(
     mut messages_in: MessageReader<LocatedEntityMessage<Pointer<Click>, Hand>>,
@@ -19,10 +17,7 @@ pub fn request_player_play(
     }
 }
 
-pub fn request_opponent_play(
-    keys: Res<ButtonInput<KeyCode>>,
-    mut messages_out: MessageWriter<PlayRequest>,
-) {
+pub fn request_opponent_play(keys: Res<ButtonInput<KeyCode>>, mut messages_out: MessageWriter<PlayRequest>) {
     if keys.just_pressed(KeyCode::Space) {
         messages_out.write(PlayRequest(ContestantID(1), CardID(255))); // Fake card ID
     }

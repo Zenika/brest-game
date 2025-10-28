@@ -1,4 +1,5 @@
-use bevy::{animation::AnimationTargetId, prelude::*};
+use bevy::animation::AnimationTargetId;
+use bevy::prelude::*;
 
 mod ted;
 mod trs;
@@ -25,11 +26,7 @@ impl Anima {
             transform: Transform::default(),
             easings: Easings::default(),
             durations: Durations::default(),
-            meta: Meta {
-                target_id,
-                clip_handle,
-                node_index,
-            },
+            meta: Meta { target_id, clip_handle, node_index },
         }
     }
 

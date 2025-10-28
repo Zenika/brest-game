@@ -1,6 +1,5 @@
-use crate::{GetTRS, GetTRSMut};
-
 use super::{Rotation, Scale, Transform, Translation};
+use crate::{GetTRS, GetTRSMut};
 
 impl GetTRS<Translation, Rotation, Scale> for Transform {
     fn get_translation(&self) -> &Translation {

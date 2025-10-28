@@ -1,7 +1,5 @@
-use std::{
-    f32::consts::{FRAC_PI_4, PI},
-    sync::LazyLock,
-};
+use std::f32::consts::{FRAC_PI_4, PI};
+use std::sync::LazyLock;
 
 use bevy::prelude::*;
 
@@ -25,8 +23,7 @@ pub static HAND_CARD_ROTATION: LazyLock<Quat> = LazyLock::new(|| Quat::from_rota
 
 pub const PLAYER_GRAVEYARD_PILE_X: f32 = 24.;
 pub const PLAYER_GRAVEYARD_PILE_Y: f32 = -12.;
-pub static PLAYER_GRAVEYARD_PILE_ROTATION: LazyLock<Quat> =
-    LazyLock::new(|| Quat::from_rotation_y(-PI));
+pub static PLAYER_GRAVEYARD_PILE_ROTATION: LazyLock<Quat> = LazyLock::new(|| Quat::from_rotation_y(-PI));
 
 pub const PLAYER_DECK_PILE_X: f32 = 24.;
 pub const PLAYER_DECK_PILE_Y: f32 = -24.;
@@ -34,5 +31,4 @@ pub static PLAYER_DECK_PILE_ROTATION: LazyLock<Quat> = LazyLock::new(|| Quat::fr
 
 pub const PLAYER_PLAYED_PILE_X: f32 = 0.;
 pub const PLAYER_PLAYED_PILE_Y: f32 = -12.;
-pub static PLAYER_PLAYED_PILE_ROTATION: LazyLock<Quat> =
-    LazyLock::new(|| Quat::from_rotation_x(0.));
+pub static PLAYER_PLAYED_PILE_ROTATION: LazyLock<Quat> = LazyLock::new(|| Quat::from_rotation_x(0.));

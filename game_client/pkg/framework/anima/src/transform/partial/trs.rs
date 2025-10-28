@@ -1,6 +1,5 @@
-use crate::{GetTRS, Rotation, Scale, Translation};
-
 use super::PartialTransform;
+use crate::{GetTRS, Rotation, Scale, Translation};
 
 impl GetTRS<Option<Translation>, Option<Rotation>, Option<Scale>> for PartialTransform {
     fn get_translation(&self) -> &Option<Translation> {

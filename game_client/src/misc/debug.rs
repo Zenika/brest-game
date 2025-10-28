@@ -1,10 +1,9 @@
-use bevy::{
-    app::{App, Plugin},
-    dev_tools::fps_overlay::{FpsOverlayConfig, FpsOverlayPlugin},
-    text::TextFont,
-    utils::default,
-};
-use bevy_inspector_egui::{bevy_egui::EguiPlugin, quick::WorldInspectorPlugin};
+use bevy::app::{App, Plugin};
+use bevy::dev_tools::fps_overlay::{FpsOverlayConfig, FpsOverlayPlugin};
+use bevy::text::TextFont;
+use bevy::utils::default;
+use bevy_inspector_egui::bevy_egui::EguiPlugin;
+use bevy_inspector_egui::quick::WorldInspectorPlugin;
 
 pub struct DebugPlugin;
 
@@ -15,10 +14,7 @@ impl Plugin for DebugPlugin {
             WorldInspectorPlugin::new(),
             FpsOverlayPlugin {
                 config: FpsOverlayConfig {
-                    text_config: TextFont {
-                        font_size: 16.0,
-                        ..default()
-                    },
+                    text_config: TextFont { font_size: 16.0, ..default() },
                     text_color: bevy::color::palettes::css::WHITE.into(),
                     enabled: true,
                     ..default()

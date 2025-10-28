@@ -1,8 +1,6 @@
-use bevy::{
-    animation::{AnimationTarget, AnimationTargetId},
-    ecs::query::QueryFilter,
-    prelude::*,
-};
+use bevy::animation::{AnimationTarget, AnimationTargetId};
+use bevy::ecs::query::QueryFilter;
+use bevy::prelude::*;
 
 use super::{Anima, Easing, WithTED};
 
@@ -28,10 +26,7 @@ pub fn enable_anima<F: QueryFilter>(
         commands.entity(entity).insert((
             AnimationGraphHandle(graphs.add(graph)),
             anima,
-            AnimationTarget {
-                id: target_id,
-                player: entity,
-            },
+            AnimationTarget { id: target_id, player: entity },
         ));
     }
 }

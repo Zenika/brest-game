@@ -20,10 +20,7 @@ impl FromWorld for BaseCardMaterial {
         let color = world.resource::<BaseCardColor>().as_color();
         let mut materials = world.resource_mut::<Assets<StandardMaterial>>();
 
-        BaseCardMaterial(materials.add(StandardMaterial {
-            base_color: color,
-            ..default()
-        }))
+        BaseCardMaterial(materials.add(StandardMaterial { base_color: color, ..default() }))
     }
 }
 
@@ -41,9 +38,6 @@ impl FromWorld for HoverCardMaterial {
         let color = world.resource::<HoverCardColor>().as_color();
         let mut materials = world.resource_mut::<Assets<StandardMaterial>>();
 
-        HoverCardMaterial(materials.add(StandardMaterial {
-            base_color: color,
-            ..default()
-        }))
+        HoverCardMaterial(materials.add(StandardMaterial { base_color: color, ..default() }))
     }
 }

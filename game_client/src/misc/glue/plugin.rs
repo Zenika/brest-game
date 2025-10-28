@@ -3,19 +3,12 @@ use bevy::prelude::*;
 use shared::{ContestantID, Play};
 use states_timer::set_on_timer;
 
-use crate::{
-    flow::{
-        BattlePhase, ContestantPlayed, Opponent, OpponentPlayed, Player, PlayerPlayed, RoundPhase,
-    },
-    card::{BaseCardMaterial, HoverCardMaterial, apply_material_on},
-    playground::{Deck, Field, Graveyard, Hand},
-};
-
-use super::{
-    messages::*,
-    resources::{OpponentID, PlayerID},
-    systems::*,
-};
+use super::messages::*;
+use super::resources::{OpponentID, PlayerID};
+use super::systems::*;
+use crate::card::{BaseCardMaterial, HoverCardMaterial, apply_material_on};
+use crate::flow::{BattlePhase, ContestantPlayed, Opponent, OpponentPlayed, Player, PlayerPlayed, RoundPhase};
+use crate::playground::{Deck, Field, Graveyard, Hand};
 
 pub struct GluePlugin;
 
@@ -44,26 +37,19 @@ impl Plugin for GluePlugin {
             .insert_resource(OpponentID(ContestantID(1)))
             .add_message::<DrawMessage>()
             .add_systems(PostStartup, enable_anima::<With<Mesh3d>>)
-            .add_systems(
-                Update,
-                set_on_timer(BattlePhase::Started, BattlePhase::InProgress),
-            )
+            .add_systems(Update, set_on_timer(BattlePhase::Started, BattlePhase::InProgress))
             .add_systems(OnEnter(RoundPhase::Starting), on_round_starting)
             .add_systems(
                 Update,
                 (
-                    apply_material_on::<HoverCardMaterial, Pointer<Over>, Hand>
-                        .in_set(PlayerPlayedSet::No),
+                    apply_material_on::<HoverCardMaterial, Pointer<Over>, Hand>.in_set(PlayerPlayedSet::No),
                     request_player_play.in_set(PlayerPlayedSet::No),
                     request_opponent_play.in_set(OpponentPlayedSet::No),
                     end_playing_phase_policy,
                 )
                     .in_set(RoundPhase::Playing),
             )
-            .add_systems(
-                Update,
-                set_on_timer(RoundPhase::Resolving, RoundPhase::Ending),
-            )
+            .add_systems(Update, set_on_timer(RoundPhase::Resolving, RoundPhase::Ending))
             .add_systems(OnEnter(RoundPhase::Ending), on_round_ending)
             .add_systems(
                 Update,

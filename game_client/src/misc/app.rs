@@ -1,26 +1,19 @@
-#[cfg(debug_assertions)]
-use super::DebugPlugin;
-
-use super::{GluePlugin, SetupPlugin};
-
+use anima::AnimaPlugin;
+use bevy::color::palettes::tailwind::{GRAY_50, ORANGE_600, ORANGE_800, TEAL_50};
+use bevy::prelude::*;
+use bevy::window::{PresentMode, WindowResolution};
 #[allow(unused_imports, clippy::single_component_path_imports)]
 #[cfg(debug_assertions)]
 use bevy_dylib;
-
-use anima::AnimaPlugin;
-use bevy::{
-    color::palettes::tailwind::{GRAY_50, ORANGE_600, ORANGE_800, TEAL_50},
-    prelude::*,
-    window::{PresentMode, WindowResolution},
-};
 use mock_server::MockServer;
 
-use crate::{
-    card::{CardColorPlugin, CardMaterialPlugin, CardMeshPlugin},
-    flow::{BattlePlugin, BattleRoundPlugin, RoundPlugin, TurnPlugin},
-    misc::constants::CARD_SIZE,
-    playground::{PlaygroundLocationPlugin, PlaygroundSequencesPlugin},
-};
+#[cfg(debug_assertions)]
+use super::DebugPlugin;
+use super::{GluePlugin, SetupPlugin};
+use crate::card::{CardColorPlugin, CardMaterialPlugin, CardMeshPlugin};
+use crate::flow::{BattlePlugin, BattleRoundPlugin, RoundPlugin, TurnPlugin};
+use crate::misc::constants::CARD_SIZE;
+use crate::playground::{PlaygroundLocationPlugin, PlaygroundSequencesPlugin};
 
 pub fn run() {
     let mut app = App::new();
@@ -43,14 +36,9 @@ pub fn run() {
 
     // Game plugins
     app.add_plugins((
-        CardColorPlugin {
-            base: ORANGE_600.into(),
-            hover: ORANGE_800.into(),
-        },
+        CardColorPlugin { base: ORANGE_600.into(), hover: ORANGE_800.into() },
         CardMaterialPlugin,
-        CardMeshPlugin {
-            card_size: CARD_SIZE,
-        },
+        CardMeshPlugin { card_size: CARD_SIZE },
     ))
     .add_plugins((PlaygroundLocationPlugin, PlaygroundSequencesPlugin))
     .add_plugins((BattlePlugin, BattleRoundPlugin, RoundPlugin, TurnPlugin))

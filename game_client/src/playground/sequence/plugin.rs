@@ -1,8 +1,7 @@
 use bevy::prelude::*;
 
-use crate::playground::{Deck, Field, Graveyard, Hand};
-
 use super::*;
+use crate::playground::{Deck, Field, Graveyard, Hand};
 
 pub struct PlaygroundSequencesPlugin;
 

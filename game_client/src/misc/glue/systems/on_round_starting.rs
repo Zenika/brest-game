@@ -1,11 +1,9 @@
-use crate::{
-    flow::{ContestantPlayed, OpponentPlayed, PlayerPlayed, RoundPhase},
-    misc::glue::messages::DrawMessage,
-    playground::{Deck, SequenceStamp},
-};
-
 use bevy::prelude::*;
 use shared::CardID;
+
+use crate::flow::{ContestantPlayed, OpponentPlayed, PlayerPlayed, RoundPhase};
+use crate::misc::glue::messages::DrawMessage;
+use crate::playground::{Deck, SequenceStamp};
 
 pub fn on_round_starting(
     mut query: Query<(&SequenceStamp<Deck>, Entity), (With<Deck>, With<CardID>)>,
