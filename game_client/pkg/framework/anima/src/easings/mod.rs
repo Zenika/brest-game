@@ -11,7 +11,7 @@ type TranslationEasing = Easing;
 type RotationEasing = Easing;
 type ScaleEasing = Easing;
 
-#[derive(Reflect, Clone, PartialEq)]
+#[derive(Reflect, Clone, Copy, PartialEq)]
 pub struct Easings {
     translation: TranslationEasing,
     rotation: RotationEasing,

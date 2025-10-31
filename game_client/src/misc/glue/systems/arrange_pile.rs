@@ -1,4 +1,4 @@
-use anima::{Anima, WithTRS};
+use anima::{Anima, WithTED};
 use bevy::prelude::*;
 
 use crate::misc::constants::CARD_THICKNESS;
@@ -20,10 +20,6 @@ pub fn arrange_pile<C: Component, A: Component>(
         );
 
         // TODO: test Anima / Parenting compat
-        anima.set_if_neq(anima.with_translation((target_translation, None, None)).with_rotation((
-            playground_part_query.rotation,
-            None,
-            None,
-        )));
+        anima.set_if_neq(anima.clone().with_transforms((target_translation, playground_part_query.rotation, None)));
     });
 }

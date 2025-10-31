@@ -25,7 +25,7 @@ states_timer = { path = "./pkg/framework/states_timer" }
 mock_server = { path = "./pkg/dedicated/mock_server" }
 
 bevy_dylib = "0.17"
-bevy-inspector-egui = "0.34"
+bevy-inspector-egui = { version = "0.35", features = ["highlight_changes"] }
 log = { version = "*", features = [
     "max_level_debug",
     "release_max_level_warn",

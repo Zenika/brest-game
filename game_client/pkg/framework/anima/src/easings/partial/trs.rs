@@ -1,7 +1,7 @@
 use super::PartialEasings;
 use crate::{Easing, GetTRS};
 
-impl GetTRS<Option<Easing>, Option<Easing>, Option<Easing>> for PartialEasings {
+impl<'trs, 's: 'trs> GetTRS<'s, &'trs Option<Easing>, &'trs Option<Easing>, &'trs Option<Easing>> for PartialEasings {
     fn get_translation(&self) -> &Option<Easing> {
         &self.translation
     }

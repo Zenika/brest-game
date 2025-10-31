@@ -4,13 +4,14 @@ use bevy::prelude::*;
 mod ted;
 mod trs;
 
-use super::{Durations, Easings, Meta, Transform};
+use super::{Durations, Easings, Meta};
+use crate::transforms::Transforms;
 
 #[derive(Component, Reflect, Clone, PartialEq)]
 #[reflect(Component)]
 #[require(Transform, AnimationGraphHandle, AnimationPlayer)]
 pub struct Anima {
-    transform: Transform,
+    transforms: Transforms,
     easings: Easings,
     durations: Durations,
     meta: Meta,
@@ -23,7 +24,7 @@ impl Anima {
         node_index: AnimationNodeIndex,
     ) -> Self {
         Self {
-            transform: Transform::default(),
+            transforms: Transforms::default(),
             easings: Easings::default(),
             durations: Durations::default(),
             meta: Meta { target_id, clip_handle, node_index },

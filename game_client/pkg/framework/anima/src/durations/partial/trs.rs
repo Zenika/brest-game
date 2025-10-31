@@ -1,7 +1,9 @@
 use super::PartialDurations;
 use crate::{Duration, GetTRS};
 
-impl GetTRS<Option<Duration>, Option<Duration>, Option<Duration>> for PartialDurations {
+impl<'trs, 's: 'trs> GetTRS<'s, &'trs Option<Duration>, &'trs Option<Duration>, &'trs Option<Duration>>
+    for PartialDurations
+{
     fn get_translation(&self) -> &Option<Duration> {
         &self.translation
     }

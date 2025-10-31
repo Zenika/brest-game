@@ -2,6 +2,7 @@ use super::{Easing, Easings};
 
 mod trs;
 
+#[derive(Clone, Copy)]
 pub struct PartialEasings {
     pub translation: Option<Easing>,
     pub rotation: Option<Easing>,

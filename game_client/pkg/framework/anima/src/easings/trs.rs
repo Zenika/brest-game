@@ -1,7 +1,7 @@
 use super::{Easings, RotationEasing, ScaleEasing, TranslationEasing};
-use crate::{GetTRS, GetTRSMut};
+use crate::{GetTRS, SetTRS};
 
-impl GetTRS<TranslationEasing, RotationEasing, ScaleEasing> for Easings {
+impl<'trs, 's: 'trs> GetTRS<'s, &'trs TranslationEasing, &'trs RotationEasing, &'trs ScaleEasing> for Easings {
     fn get_translation(&self) -> &TranslationEasing {
         &self.translation
     }
@@ -15,16 +15,19 @@ impl GetTRS<TranslationEasing, RotationEasing, ScaleEasing> for Easings {
     }
 }
 
-impl GetTRSMut<TranslationEasing, RotationEasing, ScaleEasing> for Easings {
-    fn get_translation_mut(&mut self) -> &mut TranslationEasing {
-        &mut self.translation
+impl SetTRS<TranslationEasing, RotationEasing, ScaleEasing> for Easings {
+    fn set_translation(mut self, translation: impl Into<TranslationEasing>) -> Self {
+        self.translation = translation.into();
+        self
     }
 
-    fn get_rotation_mut(&mut self) -> &mut RotationEasing {
-        &mut self.rotation
+    fn set_rotation(mut self, rotation: impl Into<RotationEasing>) -> Self {
+        self.rotation = rotation.into();
+        self
     }
 
-    fn get_scale_mut(&mut self) -> &mut ScaleEasing {
-        &mut self.scale
+    fn set_scale(mut self, scale: impl Into<ScaleEasing>) -> Self {
+        self.scale = scale.into();
+        self
     }
 }

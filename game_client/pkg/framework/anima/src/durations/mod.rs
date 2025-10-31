@@ -11,7 +11,7 @@ type TranslationDuration = Duration;
 type RotationDuration = Duration;
 type ScaleDuration = Duration;
 
-#[derive(Reflect, Clone, PartialEq)]
+#[derive(Reflect, Clone, Copy, PartialEq)]
 pub struct Durations {
     translation: TranslationDuration,
     rotation: RotationDuration,
@@ -19,8 +19,8 @@ pub struct Durations {
 }
 
 impl From<(TranslationDuration, RotationDuration, ScaleDuration)> for Durations {
-    fn from((transform, rotation, scale): (TranslationDuration, RotationDuration, ScaleDuration)) -> Self {
-        Self { translation: transform, rotation, scale }
+    fn from((translation, rotation, scale): (TranslationDuration, RotationDuration, ScaleDuration)) -> Self {
+        Self { translation, rotation, scale }
     }
 }
 

@@ -1,4 +1,4 @@
-use anima::{Anima, WithTRS};
+use anima::{Anima, WithTED};
 use bevy::prelude::*;
 
 use crate::misc::constants::{CARD_SIZE, GAP, HAND_CARD_ROTATION, HAND_CARD_Y, HAND_CARD_Z};
@@ -18,10 +18,6 @@ pub fn arrange_fan<C: Component, A: Component>(mut query: Query<(&SequenceStamp<
         let target_translation =
             Vec3::new((-x_step / 2. * (count - 1) as f32) + (x_step * index as f32), HAND_CARD_Y, HAND_CARD_Z);
 
-        anima.set_if_neq(anima.with_translation((target_translation, None, None)).with_rotation((
-            target_rotation,
-            None,
-            None,
-        )));
+        anima.set_if_neq(anima.clone().with_transforms((target_translation, target_rotation, None)));
     });
 }
