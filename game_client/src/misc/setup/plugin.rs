@@ -1,3 +1,4 @@
+use bevy::light::GlobalAmbientLight;
 use bevy::prelude::*;
 
 use super::{BoardColor, setup_board, setup_camera, setup_cards, setup_key_light};
@@ -12,7 +13,7 @@ pub struct SetupPlugin {
 
 impl Plugin for SetupPlugin {
     fn build(&self, app: &mut App) {
-        app.insert_resource(AmbientLight {
+        app.insert_resource(GlobalAmbientLight {
             color: self.fill_light_color,
             brightness: self.fill_light_intensity,
             ..default()
