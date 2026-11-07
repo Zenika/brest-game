@@ -1,4 +1,5 @@
-use bevy::{animation::AnimationTargetId, prelude::*};
+use bevy::animation::AnimationTargetId;
+use bevy::prelude::*;
 
 #[derive(Reflect, Clone, PartialEq)]
 pub struct Meta {

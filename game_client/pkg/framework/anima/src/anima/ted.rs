@@ -1,13 +1,12 @@
-use crate::{
-    Durations, Easings, GetTED, GetTEDMut, GetTRS, PartialDurations, PartialEasings,
-    PartialTransform, SetTED, SetTRS, Transform,
-};
-
 use super::Anima;
+use crate::durations::PartialDurations;
+use crate::easings::PartialEasings;
+use crate::transforms::{PartialTransforms, Transforms};
+use crate::{Durations, Easings, GetTED, SetTED, SetTRS};
 
-impl GetTED<Transform, Easings, Durations> for Anima {
-    fn get_transform(&self) -> &Transform {
-        &self.transform
+impl<'ted, 's: 'ted> GetTED<'s, &'ted Transforms, &'ted Easings, &'ted Durations> for Anima {
+    fn get_transforms(&self) -> &Transforms {
+        &self.transforms
     }
 
     fn get_easings(&self) -> &Easings {
@@ -19,72 +18,37 @@ impl GetTED<Transform, Easings, Durations> for Anima {
     }
 }
 
-impl GetTEDMut<Transform, Easings, Durations> for Anima {
-    fn get_transform_mut(&mut self) -> &mut Transform {
-        &mut self.transform
-    }
+impl SetTED<PartialTransforms, PartialEasings, PartialDurations> for Anima {
+    fn set_transforms(mut self, transforms: impl Into<PartialTransforms>) -> Self {
+        let partial: PartialTransforms = transforms.into();
 
-    fn get_easings_mut(&mut self) -> &mut Easings {
-        &mut self.easings
-    }
+        let new_transforms = partial.translation.map_or(self.transforms, |t| self.transforms.set_translation(t));
+        let new_transforms = partial.rotation.map_or(new_transforms, |r| new_transforms.set_rotation(r));
+        let new_transforms = partial.scale.map_or(new_transforms, |s| new_transforms.set_scale(s));
 
-    fn get_durations_mut(&mut self) -> &mut Durations {
-        &mut self.durations
-    }
-}
-
-impl SetTED<PartialTransform, PartialEasings, PartialDurations> for Anima {
-    fn set_transform(&mut self, transform: impl Into<PartialTransform>) -> &mut Self {
-        let partial: PartialTransform = transform.into();
-
-        if let &Some(t) = partial.get_translation() {
-            self.transform.set_translation(t);
-        }
-
-        if let &Some(r) = partial.get_rotation() {
-            self.transform.set_rotation(r);
-        }
-
-        if let &Some(s) = partial.get_scale() {
-            self.transform.set_scale(s);
-        }
-
+        self.transforms = new_transforms;
         self
     }
 
-    fn set_easings(&mut self, easings: impl Into<PartialEasings>) -> &mut Self {
+    fn set_easings(mut self, easings: impl Into<PartialEasings>) -> Self {
         let partial: PartialEasings = easings.into();
 
-        if let &Some(t) = partial.get_translation() {
-            self.easings.set_translation(t);
-        }
+        let new_transforms = partial.translation.map_or(self.easings, |t| self.easings.set_translation(t));
+        let new_transforms = partial.rotation.map_or(new_transforms, |r| new_transforms.set_rotation(r));
+        let new_transforms = partial.scale.map_or(new_transforms, |s| new_transforms.set_scale(s));
 
-        if let &Some(r) = partial.get_rotation() {
-            self.easings.set_rotation(r);
-        }
-
-        if let &Some(s) = partial.get_scale() {
-            self.easings.set_scale(s);
-        }
-
+        self.easings = new_transforms;
         self
     }
 
-    fn set_durations(&mut self, durations: impl Into<PartialDurations>) -> &mut Self {
+    fn set_durations(mut self, durations: impl Into<PartialDurations>) -> Self {
         let partial: PartialDurations = durations.into();
 
-        if let &Some(t) = partial.get_translation() {
-            self.durations.set_translation(t);
-        }
+        let new_transforms = partial.translation.map_or(self.durations, |t| self.durations.set_translation(t));
+        let new_transforms = partial.rotation.map_or(new_transforms, |r| new_transforms.set_rotation(r));
+        let new_transforms = partial.scale.map_or(new_transforms, |s| new_transforms.set_scale(s));
 
-        if let &Some(r) = partial.get_rotation() {
-            self.durations.set_rotation(r);
-        }
-
-        if let &Some(s) = partial.get_scale() {
-            self.durations.set_scale(s);
-        }
-
+        self.durations = new_transforms;
         self
     }
 }

@@ -1,6 +1,16 @@
-use bevy::{animation::animated_field, prelude::*};
+use std::fmt::Debug;
 
-use super::{Anima, GetTED, GetTRS};
+use bevy::animation::animation_curves::{AnimatableCurve, AnimatableProperty, AnimationCurve};
+use bevy::animation::{AnimationClip, AnimationPlayer, animated_field};
+use bevy::asset::Assets;
+use bevy::ecs::query::Changed;
+use bevy::ecs::system::{Query, ResMut};
+use bevy::math::curve::{CurveExt as _, Ease, EaseFunction, EasingCurve, interval};
+use bevy::prelude::AnimatedField;
+use bevy::reflect::{FromReflect, Reflectable};
+use bevy::transform::components::Transform;
+
+use super::{Anima, GetTRS};
 
 pub fn animate_anima(
     mut animations: ResMut<Assets<AnimationClip>>,
@@ -11,50 +21,46 @@ pub fn animate_anima(
 
         let clip = animations.get_mut(&anima.clip_handle()).unwrap();
 
-        clip.add_curve_to_target(
-            anima.target_id(),
-            AnimatableCurve::new(
-                animated_field!(Transform::translation),
-                EasingCurve::new(
-                    *transform.get_translation(),
-                    *anima.get_transform().get_translation(),
-                    *anima.get_easings().get_translation(),
-                )
-                .reparametrize_linear(
-                    interval(0., *anima.get_durations().get_translation()).unwrap(),
-                )
-                .unwrap(),
-            ),
-        );
-
-        clip.add_curve_to_target(
-            anima.target_id(),
-            AnimatableCurve::new(
-                animated_field!(Transform::rotation),
-                EasingCurve::new(
-                    *transform.get_rotation(),
-                    *anima.get_transform().get_rotation(),
-                    *anima.get_easings().get_rotation(),
-                )
-                .reparametrize_linear(interval(0., *anima.get_durations().get_rotation()).unwrap())
-                .unwrap(),
-            ),
-        );
-
-        clip.add_curve_to_target(
-            anima.target_id(),
-            AnimatableCurve::new(
-                animated_field!(Transform::scale),
-                EasingCurve::new(
-                    *transform.get_scale(),
-                    *anima.get_transform().get_scale(),
-                    *anima.get_easings().get_scale(),
-                )
-                .reparametrize_linear(interval(0., *anima.get_durations().get_scale()).unwrap())
-                .unwrap(),
-            ),
-        );
+        clip.add_curve_to_target(anima.target_id(), translation_curve(anima, transform));
+        clip.add_curve_to_target(anima.target_id(), rotation_curve(anima, transform));
+        clip.add_curve_to_target(anima.target_id(), scale_curve(anima, transform));
 
         player.play(anima.node_index());
     }
+}
+
+fn translation_curve(anima: &Anima, transform: &Transform) -> impl AnimationCurve {
+    let current = transform.translation;
+    let (&next, &easing, &duration) = anima.get_translation();
+
+    property_curve(animated_field!(Transform::translation), current, next, easing, duration)
+}
+
+fn rotation_curve(anima: &Anima, transform: &Transform) -> impl AnimationCurve {
+    let current = transform.rotation;
+    let (&next, &easing, &duration) = anima.get_rotation();
+
+    property_curve(animated_field!(Transform::rotation), current, next, easing, duration)
+}
+
+fn scale_curve(anima: &Anima, transform: &Transform) -> impl AnimationCurve {
+    let current = transform.scale;
+    let (&next, &easing, &duration) = anima.get_scale();
+
+    property_curve(animated_field!(Transform::scale), current, next, easing, duration)
+}
+
+fn property_curve<P: AnimatableProperty + Clone>(
+    property: P,
+    current: P::Property,
+    next: P::Property,
+    easing: EaseFunction,
+    duration: f32,
+) -> impl AnimationCurve
+where
+    P::Property: Ease + Clone + FromReflect + Reflectable + Debug,
+{
+    let domain = interval(0., duration).unwrap();
+    let curve = EasingCurve::new(current, next, easing).reparametrize_linear(domain).unwrap();
+    AnimatableCurve::new(property, curve)
 }
