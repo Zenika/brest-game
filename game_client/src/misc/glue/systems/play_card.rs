@@ -1,4 +1,5 @@
 use bevy::prelude::*;
+use bevy_picking::events::PointerClick;
 use shared::{CardID, ContestantID, Play, PlayRequest};
 
 use crate::flow::{ContestantPlayed, OpponentPlayed, PlayerPlayed};
@@ -6,7 +7,7 @@ use crate::misc::glue::resources::{OpponentID, PlayerID};
 use crate::playground::{Field, Hand, LocatedEntityMessage};
 
 pub fn request_player_play(
-    mut messages_in: MessageReader<LocatedEntityMessage<Pointer<Click>, Hand>>,
+    mut messages_in: MessageReader<LocatedEntityMessage<PointerClick, Hand>>,
     query: Query<&CardID>,
     mut messages_out: MessageWriter<PlayRequest>,
 ) {

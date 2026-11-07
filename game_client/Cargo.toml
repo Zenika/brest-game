@@ -6,7 +6,7 @@ members = [
 
 resolver = "2"
 [workspace.dependencies]
-bevy = { version = "=0.19.0", features = ["bevy_dev_tools"] }
+bevy = { version = "=0.20.1", features = ["bevy_dev_tools"] }
 shared = { path = "./pkg/dedicated/shared" }
 
 [package]
@@ -15,17 +15,18 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-bevy = { workspace = true }
+bevy = { workspace = true, features = ["bevy_dev_tools", "render_dev_tools"] }
 shared = { workspace = true }
 
 anima = { path = "./pkg/framework/anima" }
+bevy_picking = "0.20"
 entity_message = { path = "./pkg/framework/entity_message" }
 states_timer = { path = "./pkg/framework/states_timer" }
 
 mock_server = { path = "./pkg/dedicated/mock_server" }
 
-bevy_dylib = "0.19"
-bevy-inspector-egui = { version = "0.37", features = ["highlight_changes"] }
+bevy_dylib = "0.20"
+bevy-inspector-egui = { version = "0.38", features = ["highlight_changes"] }
 log = { version = "*", features = [
     "max_level_debug",
     "release_max_level_warn",

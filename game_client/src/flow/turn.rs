@@ -1,6 +1,4 @@
 use bevy::prelude::*;
-#[cfg(debug_assertions)]
-use bevy_inspector_egui::quick::StateInspectorPlugin;
 
 #[derive(Component, Debug, Reflect, PartialEq, Clone, Copy)]
 #[reflect(Component)]
@@ -33,14 +31,8 @@ impl Plugin for TurnPlugin {
             .register_type::<State<PlayerPlayed>>()
             .register_type::<NextState<PlayerPlayed>>();
 
-        #[cfg(debug_assertions)]
-        app.add_plugins(StateInspectorPlugin::<PlayerPlayed>::default());
-
         app.init_state::<OpponentPlayed>()
             .register_type::<State<OpponentPlayed>>()
             .register_type::<NextState<OpponentPlayed>>();
-
-        #[cfg(debug_assertions)]
-        app.add_plugins(StateInspectorPlugin::<OpponentPlayed>::default());
     }
 }
