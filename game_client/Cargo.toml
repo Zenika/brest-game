@@ -6,7 +6,7 @@ members = [
 
 resolver = "2"
 [workspace.dependencies]
-bevy = { version = "0.18", features = ["bevy_dev_tools"] }
+bevy = { version = "=0.19.0", features = ["bevy_dev_tools"] }
 shared = { path = "./pkg/dedicated/shared" }
 
 [package]
@@ -24,8 +24,8 @@ states_timer = { path = "./pkg/framework/states_timer" }
 
 mock_server = { path = "./pkg/dedicated/mock_server" }
 
-bevy_dylib = "0.18"
-bevy-inspector-egui = { version = "0.36", features = ["highlight_changes"] }
+bevy_dylib = "0.19"
+bevy-inspector-egui = { version = "0.37", features = ["highlight_changes"] }
 log = { version = "*", features = [
     "max_level_debug",
     "release_max_level_warn",

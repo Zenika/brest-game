@@ -7,11 +7,11 @@ use crate::playground::{Field, Hand, LocatedEntityMessage};
 
 pub fn request_player_play(
     mut messages_in: MessageReader<LocatedEntityMessage<Pointer<Click>, Hand>>,
-    mut query: Query<&CardID>,
+    query: Query<&CardID>,
     mut messages_out: MessageWriter<PlayRequest>,
 ) {
     if let Some(message) = messages_in.read().last()
-        && let Ok(card_id) = query.get_mut(message.entity())
+        && let Ok(card_id) = query.get(message.entity())
     {
         messages_out.write(PlayRequest(ContestantID(0), *card_id));
     }

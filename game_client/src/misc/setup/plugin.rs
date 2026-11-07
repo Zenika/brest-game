@@ -5,7 +5,7 @@ use super::{BoardColor, setup_board, setup_camera, setup_cards, setup_key_light}
 
 pub struct SetupPlugin {
     pub key_light_illuminance: f32,
-    pub key_light_shadows_enabled: bool,
+    pub key_light_shadow_maps_enabled: bool,
     pub fill_light_color: Color,
     pub fill_light_intensity: f32,
     pub board_color: Color,
@@ -24,7 +24,7 @@ impl Plugin for SetupPlugin {
             (
                 setup_camera,
                 // Parameterized system without SystemParam, cf `systems.rs`
-                setup_key_light(self.key_light_illuminance, self.key_light_shadows_enabled),
+                setup_key_light(self.key_light_illuminance, self.key_light_shadow_maps_enabled),
                 // Parameterized system with SystemParam, cf `systems.rs`
                 setup_board,
                 setup_cards,

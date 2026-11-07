@@ -20,7 +20,7 @@ impl Plugin for BattleRoundPlugin {
         app.init_resource::<BattleRoundCount>().add_systems(
             Update,
             new_round_policy.run_if(
-                in_state(BattlePhase::InProgress).and(in_state(RoundPhase::Waiting).or(in_state(RoundPhase::Ending))),
+                in_state(BattlePhase::InProgress).and_eager(in_state(RoundPhase::Waiting).or_eager(in_state(RoundPhase::Ending))),
             ),
         );
     }
