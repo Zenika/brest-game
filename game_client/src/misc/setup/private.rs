@@ -31,9 +31,9 @@ pub fn setup_camera(mut commands: Commands) {
 }
 
 // Parameterized system without SystemParam, RETURNS the desired system
-pub fn setup_key_light(illuminance: f32, shadows_enabled: bool) -> impl Fn(Commands<'_, '_>) {
+pub fn setup_key_light(illuminance: f32, shadow_maps_enabled: bool) -> impl Fn(Commands<'_, '_>) {
     move |mut commands: Commands| {
-        commands.spawn((Name::new("Key light"), DirectionalLight { illuminance, shadows_enabled, ..default() }));
+        commands.spawn((Name::new("Key light"), DirectionalLight { illuminance, shadow_maps_enabled, ..default() }));
     }
 }
 

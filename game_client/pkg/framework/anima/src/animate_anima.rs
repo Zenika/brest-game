@@ -19,7 +19,7 @@ pub fn animate_anima(
     for (transform, anima, target_id, mut player) in &mut query {
         player.stop(anima.node_index());
 
-        let clip = animations.get_mut(&anima.clip_handle()).unwrap();
+        let mut clip = animations.get_mut(&anima.clip_handle()).unwrap();
 
         clip.add_curve_to_target(*target_id, translation_curve(anima, transform));
         clip.add_curve_to_target(*target_id, rotation_curve(anima, transform));

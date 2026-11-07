@@ -12,7 +12,9 @@ pub struct SpawnCard {
 }
 
 impl Command for SpawnCard {
-    fn apply(self, world: &mut World) {
+    type Out = ();
+
+    fn apply(self, world: &mut World) -> Self::Out {
         let card_mesh = world.resource::<CardMesh>();
         let card_material = world.resource::<BaseCardMaterial>();
 

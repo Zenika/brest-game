@@ -45,7 +45,7 @@ pub fn run() {
     .add_plugins((
         SetupPlugin {
             key_light_illuminance: light_consts::lux::OVERCAST_DAY,
-            key_light_shadows_enabled: true,
+            key_light_shadow_maps_enabled: true,
             fill_light_intensity: 100.,
             fill_light_color: TEAL_50.into(),
             board_color: GRAY_50.into(),
