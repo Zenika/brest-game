@@ -1,4 +1,5 @@
 use bevy::prelude::*;
+use bevy_picking::events::{PointerClick, PointerOver, PointerOut};
 use entity_message::relay_as_entity_message;
 use shared::CardID;
 
@@ -35,9 +36,9 @@ impl Command for SpawnCard {
             .spawn(base_bundle)
             .insert(rendering_bundle)
             .insert(deck_seq_stamp)
-            .observe(relay_as_entity_message::<Pointer<Over>>)
-            .observe(relay_as_entity_message::<Pointer<Out>>)
-            .observe(relay_as_entity_message::<Pointer<Click>>);
+            .observe(relay_as_entity_message::<PointerOver>)
+            .observe(relay_as_entity_message::<PointerOut>)
+            .observe(relay_as_entity_message::<PointerClick>);
     }
 }
 

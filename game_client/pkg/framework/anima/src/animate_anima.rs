@@ -3,10 +3,9 @@ use std::fmt::Debug;
 use bevy::animation::animation_curves::{AnimatableCurve, AnimatableProperty, AnimationCurve};
 use bevy::animation::{AnimationClip, AnimationPlayer, AnimationTargetId, animated_field};
 use bevy::asset::Assets;
+use bevy::curve::prelude::*;
 use bevy::ecs::query::Changed;
 use bevy::ecs::system::{Query, ResMut};
-use bevy::math::curve::{CurveExt as _, Ease, EaseFunction, EasingCurve, interval};
-use bevy::prelude::AnimatedField;
 use bevy::reflect::{FromReflect, Reflectable};
 use bevy::transform::components::Transform;
 

@@ -1,5 +1,6 @@
 use anima::enable_anima;
 use bevy::prelude::*;
+use bevy_picking::events::{PointerOver, PointerOut};
 use shared::{ContestantID, Play};
 use states_timer::set_on_timer;
 
@@ -42,7 +43,7 @@ impl Plugin for GluePlugin {
             .add_systems(
                 Update,
                 (
-                    apply_material_on::<HoverCardMaterial, Pointer<Over>, Hand>.in_set(PlayerPlayedSet::No),
+                    apply_material_on::<HoverCardMaterial, PointerOver, Hand>.in_set(PlayerPlayedSet::No),
                     request_player_play.in_set(PlayerPlayedSet::No),
                     request_opponent_play.in_set(OpponentPlayedSet::No),
                     end_playing_phase_policy,
@@ -54,10 +55,10 @@ impl Plugin for GluePlugin {
             .add_systems(
                 Update,
                 (
-                    apply_material_on::<BaseCardMaterial, Pointer<Out>, Deck>,
-                    apply_material_on::<BaseCardMaterial, Pointer<Out>, Hand>,
-                    apply_material_on::<BaseCardMaterial, Pointer<Out>, Field>,
-                    apply_material_on::<BaseCardMaterial, Pointer<Out>, Graveyard>,
+                    apply_material_on::<BaseCardMaterial, PointerOut, Deck>,
+                    apply_material_on::<BaseCardMaterial, PointerOut, Hand>,
+                    apply_material_on::<BaseCardMaterial, PointerOut, Field>,
+                    apply_material_on::<BaseCardMaterial, PointerOut, Graveyard>,
                     arrange_pile::<Player, Deck>,
                     arrange_fan::<Player, Hand>,
                     arrange_pile::<Player, Field>,

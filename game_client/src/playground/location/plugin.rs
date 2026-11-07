@@ -1,4 +1,7 @@
 use bevy::prelude::*;
+use bevy_picking::events::{
+    PointerClick, PointerOver, PointerOut, PointerPress, PointerRelease,
+};
 use entity_message::EntityMessage;
 
 use super::{Deck, Field, Graveyard, Hand, LocatedEntityMessage};
@@ -27,10 +30,10 @@ impl PlaygroundLocationPlugin {
 
 impl Plugin for PlaygroundLocationPlugin {
     fn build(&self, app: &mut App) {
-        PlaygroundLocationPlugin::handle_event::<Pointer<Out>>(app);
-        PlaygroundLocationPlugin::handle_event::<Pointer<Over>>(app);
-        PlaygroundLocationPlugin::handle_event::<Pointer<Press>>(app);
-        PlaygroundLocationPlugin::handle_event::<Pointer<Release>>(app);
-        PlaygroundLocationPlugin::handle_event::<Pointer<Click>>(app);
+        PlaygroundLocationPlugin::handle_event::<PointerOut>(app);
+        PlaygroundLocationPlugin::handle_event::<PointerOver>(app);
+        PlaygroundLocationPlugin::handle_event::<PointerPress>(app);
+        PlaygroundLocationPlugin::handle_event::<PointerRelease>(app);
+        PlaygroundLocationPlugin::handle_event::<PointerClick>(app);
     }
 }
