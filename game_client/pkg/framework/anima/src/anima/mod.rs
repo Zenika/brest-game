@@ -1,4 +1,3 @@
-use bevy::animation::AnimationTargetId;
 use bevy::prelude::*;
 
 mod ted;
@@ -18,21 +17,13 @@ pub struct Anima {
 }
 
 impl Anima {
-    pub fn new(
-        target_id: AnimationTargetId,
-        clip_handle: Handle<AnimationClip>,
-        node_index: AnimationNodeIndex,
-    ) -> Self {
+    pub fn new(clip_handle: Handle<AnimationClip>, node_index: AnimationNodeIndex) -> Self {
         Self {
             transforms: Transforms::default(),
             easings: Easings::default(),
             durations: Durations::default(),
-            meta: Meta { target_id, clip_handle, node_index },
+            meta: Meta { clip_handle, node_index },
         }
-    }
-
-    pub fn target_id(&self) -> AnimationTargetId {
-        self.meta.target_id
     }
 
     pub fn clip_handle(&self) -> Handle<AnimationClip> {

@@ -1,7 +1,7 @@
 use std::fmt::Debug;
 
 use bevy::animation::animation_curves::{AnimatableCurve, AnimatableProperty, AnimationCurve};
-use bevy::animation::{AnimationClip, AnimationPlayer, animated_field};
+use bevy::animation::{AnimationClip, AnimationPlayer, AnimationTargetId, animated_field};
 use bevy::asset::Assets;
 use bevy::ecs::query::Changed;
 use bevy::ecs::system::{Query, ResMut};
@@ -14,16 +14,16 @@ use super::{Anima, GetTRS};
 
 pub fn animate_anima(
     mut animations: ResMut<Assets<AnimationClip>>,
-    mut query: Query<(&Transform, &Anima, &mut AnimationPlayer), Changed<Anima>>,
+    mut query: Query<(&Transform, &Anima, &AnimationTargetId, &mut AnimationPlayer), Changed<Anima>>,
 ) {
-    for (transform, anima, mut player) in &mut query {
+    for (transform, anima, target_id, mut player) in &mut query {
         player.stop(anima.node_index());
 
         let clip = animations.get_mut(&anima.clip_handle()).unwrap();
 
-        clip.add_curve_to_target(anima.target_id(), translation_curve(anima, transform));
-        clip.add_curve_to_target(anima.target_id(), rotation_curve(anima, transform));
-        clip.add_curve_to_target(anima.target_id(), scale_curve(anima, transform));
+        clip.add_curve_to_target(*target_id, translation_curve(anima, transform));
+        clip.add_curve_to_target(*target_id, rotation_curve(anima, transform));
+        clip.add_curve_to_target(*target_id, scale_curve(anima, transform));
 
         player.play(anima.node_index());
     }
